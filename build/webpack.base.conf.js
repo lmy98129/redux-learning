@@ -16,9 +16,13 @@ module.exports = {
     rules: [
       {
         test: /\.js?$/,
-        use: "babel-loader",
+        loader: "babel-loader",
         exclude: /node_modules/,
-        include: APP_PATH
+        include: APP_PATH,
+        options: {
+          compact: true,
+          presets: ['react']
+        }
       },
       /*{
         test: /\.html$/,
