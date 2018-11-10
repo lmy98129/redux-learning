@@ -14,7 +14,8 @@ export default (state = { value: "Loading" }, action) => {
       }
     case 'SCHEDULE/GET_VALUE_SUCCESS':
       return {
-        value: JSON.stringify(action.payload)
+        value: "Success",
+        payload: JSON.stringify(action.payload)
       }
     case 'SCHEDULE/GET_VALUE_FAILED':
       return {
@@ -26,9 +27,14 @@ export default (state = { value: "Loading" }, action) => {
 }
 
 export const mapStateToProps = (state) => {
-  return {
-    value: state.schedule.value
+  let props = {
+    value: state.schedule.value,
+    payload: ""
   }
+  if (state.schedule.value === "Success") {
+    props.payload = JSON.parse(state.schedule.payload)
+  }
+  return props;
 }
 
 export const mapDispatchToProps = (dispatch) => {
@@ -71,9 +77,22 @@ export const scheduleGetter = (url, init, dispatch) => {
     .then(res => res.json())
     .then(res => {
       console.log(res);
+      let schedule = res.data.body.map;
+      // let decodeSchedule = {};
+      // for(let time=1; time<=6; time++) {
+      //   decodeSchedule[String(time)] = {};
+      //   for (let date=1; date<=7; date++) {
+      //     if (!schedule[String(date)]) {
+      //       decodeSchedule[String(time)][String(date)] = [];
+      //     } else {
+      //       decodeSchedule[String(time)][String(date)] = schedule[String(date)][String(time)];
+      //     }
+      //   }
+      // }
+      // console.log(decodeSchedule)
       dispatch({
         type: actionTypes.GET_VALUE_SUCCESS,
-        payload: res.data.body.map
+        payload: schedule
       })
     })
     .catch(err => {
