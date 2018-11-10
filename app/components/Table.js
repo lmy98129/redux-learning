@@ -4,6 +4,33 @@ import { connect } from 'react-redux'
 import { mapDispatchToProps, mapStateToProps, scheduleGetter } from '../redux/modules/schedule'
 import './Table.css'
 
+const timeRange = {
+  1: {
+    start: "8:00",
+    end: "9:35"
+  },
+  2: {
+    start: "9:55",
+    end: "11:30"
+  },
+  3: {
+    start: "13:30",
+    end: "15:05"
+  },
+  4: {
+    start: "15:20",
+    end: "16:55"
+  },
+  5: {
+    start: "17:10",
+    end: "18:45"
+  },
+  6: {
+    start: "19:30",
+    end: "21:05"
+  }
+}
+
 class Table extends Component {
   componentDidMount() {
     const { getValue } = this.props;
@@ -29,12 +56,32 @@ class Table extends Component {
         <div>
           <button onClick={getValue} className="load-btn">load value</button>
           <table>
+            <thead>
+              <tr>
+                <th></th>
+                <th>周一</th>
+                <th>周二</th>
+                <th>周三</th>
+                <th>周四</th>
+                <th>周五</th>
+                <th>周六</th>
+                <th>周日</th>
+              </tr>
+            </thead>
             <tbody>
               {
-                (value === "Success") ? 
-                (Object.keys(payload).map((time) => {
+                Object.keys(payload).map((time) => {
                   return (
                     <tr key={'ul_'+ time} >
+                      <th>
+                        {time}
+                        <br/>
+                        {timeRange[time].start}
+                        <br/>
+                        |
+                        <br/>
+                        {timeRange[time].end}
+                      </th>
                       {
                         Object.keys(payload[time]).map((date) => {
                           return (
@@ -44,8 +91,7 @@ class Table extends Component {
                       }
                     </tr>
                     )
-                  })
-                ) : value
+                })
               }
             </tbody>
           </table>
@@ -67,10 +113,10 @@ class Grid extends Component {
             return (
               <span key={'span_'+(index+1)}>
                 {
-                  content[0].courseName
+                  content[index].courseName
                 }<br/>
                 {
-                  content[0].SKZCZFC
+                  content[index].SKZCZFC
                 }
               </span>
             )
