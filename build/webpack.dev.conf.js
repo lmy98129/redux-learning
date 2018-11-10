@@ -29,6 +29,14 @@ module.exports = merge(baseWebpackConfig, {
     https: false,
     noInfo: true,
     open: true,
-    proxy: {}
+    proxy: {
+      '/login': {
+        target: 'http://xbeta.club:7001/login',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/login': '/'
+        }
+      }
+    }
   }
 });

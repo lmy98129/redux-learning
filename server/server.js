@@ -1,8 +1,7 @@
 const http = require("http");
 const urlib = require("url");
 const querystring = require("querystring");
-let request = require("request-promise");
-request = request.defaults({jar: true});
+const request = require("request-promise").defaults({jar: true});
 
 http.createServer((req, res) => {
   let args = urlib.parse(req.url).query;

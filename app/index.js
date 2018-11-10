@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom'
 import { createStore, applyMiddleware } from 'redux'
 import { Provider, connect } from 'react-redux'
 import thunk from 'redux-thunk'
+import qs from 'querystring'
 
 // React component
 class Table extends Component {
@@ -44,7 +45,7 @@ function valueReducer(state = { value: "" }, action) {
       }
     case 'GET_VALUE_SUCCESS':
       return {
-        value: ""
+        value: JSON.stringify(action.payload)
       }
     case 'GET_VALUE_FAILED':
       return {
@@ -70,12 +71,20 @@ function mapStateToProps(state) {
 
 const getValueAsync = (url, init) => {
   return (dispatch, getState) => {
-    fetch(url, init)
+    fetch(url, {
+      method: 'GET',
+      mode: "cors",
+    })
+    .then(() => {
+      init.headers.csrftoken = qs.parse(document.cookie).csrfToken;
+      return fetch(url, init);
+    })
     .then(res => res.json())
     .then(res => {
       console.log(res);
       dispatch({
         type: actionTypes.GET_VALUE_SUCCESS,
+        payload: res.data.body.map
       })
     })
     .catch(err => {
@@ -91,23 +100,22 @@ function mapDispatchToProps(dispatch) {
     onGetButtonClick: () => dispatch(actionTypes.GET_VALUE),
     onGetButtonClickAsync: () => {
       dispatch(getValueAsync(
-      //   'http://elearning.ustb.edu.cn/choose_courses/j_spring_security_check', {
-      //   method: 'POST',
-      //   headers: {
-      //     "Content-Type": "application/x-www-form-urlencoded",
-      //   },
-      //   body: 'j_username=41624140,undergraduate&j_password=lmylmylmy98129',
-      //   // credentials: 'include',
-      //   mode: "no-cors"
-      // }
-      'http://student.bkthink.com/smvc/StuLoginService/loginStudentByIdentity.json', {
+      '/login', 
+      // 'http://localhost:7001/login',
+      {
           method: 'POST',
           headers: {
-            "Content-Type": "application/json;charset=UTF-8",
+            "Content-Type": "application/x-www-form-urlencoded",
+            "csrftoken": ""
           },
-          body: "idNo=350721199801291815&loginApi=/StuLoginService/loginStudentByIdentity.json&secrite=291815&stuNo=41624140",
+          body: qs.stringify({
+            idNo: '350721199801291815',
+            loginApi: '/StuLoginService/loginStudentByIdentity.json',
+            secrite: '291815',
+            stuNo: '41624140',
+          }),
           credentials: 'include',
-          mode: "no-cors"
+          mode: "cors"
         }
       ));
     }
