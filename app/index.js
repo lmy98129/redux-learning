@@ -2,11 +2,11 @@ import ReactDOM from 'react-dom'
 import React from 'react'
 import { Provider } from 'react-redux'
 import store from './redux/create'
-import Table from './components/Table'
+import App from './components/App'
 
 ReactDOM.render(
   <Provider store={store}>
-    <Table />
+    <App />
   </Provider>,
   document.getElementById('root')
 )

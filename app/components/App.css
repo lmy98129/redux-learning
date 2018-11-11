@@ -1,0 +1,37 @@
+button {
+  outline: none;
+}
+
+.load-btn {
+  width: 88%;
+  border: 1px solid #aaa;
+  border-radius: 16px;
+  background: #fff;
+  font-size: 15px;
+  padding: 6px 0px;
+  margin: 18px auto;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.load-btn:active {
+  background: #bbb;
+}
+
+.course-table-wrapper {
+  width: 50%;
+  margin: 0 auto;
+}
+
+@media screen and (max-width: 1124px){
+  .course-table-wrapper {
+    width: 100%;
+    margin: 0 auto;
+  }
+}
+
+.button-holder {
+  height: 60px;
+}

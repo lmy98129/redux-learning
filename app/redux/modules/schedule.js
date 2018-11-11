@@ -4,6 +4,7 @@ export const actionTypes = {
   GET_VALUE_LOADING: 'SCHEDULE/GET_VALUE_LOADING',
   GET_VALUE_SUCCESS: 'SCHEDULE/GET_VALUE_SUCCESS',
   GET_VALUE_FAILED: 'SCHEDULE/GET_VALUE_FAILED',
+  ADD_RECORD: 'SCHEDULE/ADD_RECORD'
 }
 
 export default (state = { value: "Loading" }, action) => {
@@ -78,7 +79,6 @@ export const scheduleGetter = (url, init, dispatch) => {
     })
     .then(res => res.json())
     .then(res => {
-      console.log(res);
       let schedule = res.data.body.map;
       let colorMap = {}, counter = 0;
       for (let time=1; time<=6; time++) {
@@ -96,26 +96,12 @@ export const scheduleGetter = (url, init, dispatch) => {
           }
         }
       }
-      // let decodeSchedule = {};
-      // for(let time=1; time<=6; time++) {
-      //   decodeSchedule[String(time)] = {};
-      //   for (let date=1; date<=7; date++) {
-      //     if (!schedule[String(date)]) {
-      //       decodeSchedule[String(time)][String(date)] = [];
-      //     } else {
-      //       decodeSchedule[String(time)][String(date)] = schedule[String(date)][String(time)];
-      //     }
-      //   }
-      // }
-      // console.log(decodeSchedule)
-      console.log(schedule);
       dispatch({
         type: actionTypes.GET_VALUE_SUCCESS,
         payload: schedule
       })
     })
     .catch(err => {
-      console.log(err);
       dispatch({type: actionTypes.GET_VALUE_FAILED})
     })
   })
