@@ -63,6 +63,8 @@ export const mapDispatchToProps = (dispatch) => {
   }
 }
 
+const defaultColor = ["#f05261", "#48a8e4", "#ffd061", "#52db9a", "#70d3e6", "#52db9a", "#3f51b5", "#f3d147", "#4adbc3", "#673ab7", "#f3db49", "#76bfcd", "#b495e1", "#ff9800", "#8bc34a"];
+
 export const scheduleGetter = (url, init, dispatch) => {
   dispatch({ type: actionTypes.GET_VALUE_LOADING });
   return new Promise(() => {
@@ -78,6 +80,22 @@ export const scheduleGetter = (url, init, dispatch) => {
     .then(res => {
       console.log(res);
       let schedule = res.data.body.map;
+      let colorMap = {}, counter = 0;
+      for (let time=1; time<=6; time++) {
+        for (let date=1; date<=7; date++) {
+          for (let index=0; index<schedule[String(time)][String(date)].length; index++) {
+            let item = schedule[String(time)][String(date)][index],
+              name = item.courseName;
+            if (!colorMap[name]) {
+              colorMap[name] = defaultColor[counter];
+              schedule[String(time)][String(date)][index].color = defaultColor[counter];
+              counter++;
+            } else {
+              schedule[String(time)][String(date)][index].color = colorMap[name];
+            }
+          }
+        }
+      }
       // let decodeSchedule = {};
       // for(let time=1; time<=6; time++) {
       //   decodeSchedule[String(time)] = {};
@@ -90,6 +108,7 @@ export const scheduleGetter = (url, init, dispatch) => {
       //   }
       // }
       // console.log(decodeSchedule)
+      console.log(schedule);
       dispatch({
         type: actionTypes.GET_VALUE_SUCCESS,
         payload: schedule

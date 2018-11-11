@@ -45,19 +45,16 @@ class Table extends Component {
     if (value !== "Success") {
       return (
         <div>
-          <div>
-            <button onClick={getValue} className="load-btn">load value</button>
-          </div>
           <span>{value}</span>
+          {/* <button onClick={getValue} className="load-btn">load table</button> */}
         </div>
       )
     } else {
       return (
-        <div>
-          <button onClick={getValue} className="load-btn">load value</button>
-          <table>
+        <div className="course-table-wrapper">
+          <table className="course-table">
             <thead>
-              <tr>
+              <tr className="course-table-head">
                 <th></th>
                 <th>周一</th>
                 <th>周二</th>
@@ -72,8 +69,8 @@ class Table extends Component {
               {
                 Object.keys(payload).map((time) => {
                   return (
-                    <tr key={'ul_'+ time} >
-                      <th>
+                    <tr key={'ul_'+ time} className="course-table-line">
+                      <th className="course-table-left-side">
                         {time}
                         <br/>
                         {timeRange[time].start}
@@ -95,6 +92,7 @@ class Table extends Component {
               }
             </tbody>
           </table>
+          {/* <button onClick={getValue} className="load-btn">load table</button> */}
         </div>
       )
     }
@@ -105,22 +103,19 @@ class Grid extends Component {
   render() {
     const { content } = this.props;
     if (content.length === 0) {
-      return (<td></td>)
+      return (<td className="course-table-grid"></td>)
     } else {
       return(
-        <td>
-          {content.map((value, index) => {
-            return (
-              <span key={'span_'+(index+1)}>
-                {
-                  content[index].courseName
-                }<br/>
-                {
-                  content[index].SKZCZFC
-                }
-              </span>
-            )
-          })}
+        <td className="course-table-grid">
+          <div className="course-table-grid-content-wrapper"  style={{background:content[0].color}}>
+            <div className="course-table-grid-content">
+              <div className="content-title">{ content[0].courseName }<br/></div>
+              <div className="content-time"> { content[0].SKZCZFC }<br/></div>
+              {
+                content.length > 1 ? (<div className="content-hint">点击展开</div>) : ""
+              }
+            </div>
+          </div>
         </td>
       )
     }
