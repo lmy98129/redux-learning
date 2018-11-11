@@ -4,6 +4,7 @@
   color: #fff;
   text-align: center;
   font-size: 14px;
+  cursor: pointer;
 }
 
 .course-table-grid-content .content-title {
@@ -45,6 +46,5 @@
   width: 100%;
   white-space: normal;
   word-break: break-all;
-  cursor: pointer;
   padding-top: 4px
 }

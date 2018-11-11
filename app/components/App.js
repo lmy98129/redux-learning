@@ -1,7 +1,7 @@
 import React from 'react'
 import Table from './Table'
 import './App.css'
-import { connect, Provider } from 'react-redux'
+import { connect } from 'react-redux'
 import { mapDispatchToProps } from '../redux/modules/schedule';
 
 const App = ({ getValue }) => {
