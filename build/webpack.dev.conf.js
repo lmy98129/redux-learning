@@ -31,7 +31,7 @@ module.exports = merge(baseWebpackConfig, {
     open: true,
     proxy: {
       '/login': {
-        target: 'http://xbeta.club:7001/login',
+        target: 'http://xbeta.club/login',
         changeOrigin: true,
         pathRewrite: {
           '^/login': '/'

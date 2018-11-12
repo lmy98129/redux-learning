@@ -11,7 +11,7 @@ class Table extends Component {
     getValue();
   }
   render() {
-    const { value, payload } = this.props;
+    const { value, payload, addCourse } = this.props;
     let arr = [];
     for(let i=0; i<6; i++) {
       arr.push("");
@@ -52,7 +52,7 @@ class Table extends Component {
                     {
                       Object.keys(payload[time]).map((date) => {
                         return (
-                          <Grid content={payload[time][date]} key={'li_'+date}/>
+                          <Grid content={payload[time][date]} key={'li_'+date} addCourse={addCourse} fullContent={payload}/>
                         )
                       })
                     }
@@ -68,7 +68,9 @@ class Table extends Component {
 }
 
 Table.propTypes = {
-  value: PropTypes.string.isRequired
+  value: PropTypes.string.isRequired,
+  payload: PropTypes.object,
+  getValue: PropTypes.func.isRequired,
 }
 
 const timeRange = {

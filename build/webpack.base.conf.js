@@ -16,12 +16,17 @@ module.exports = {
     rules: [
       {
         test: /\.js?$/,
-        loader: "babel-loader",
         exclude: /node_modules/,
         include: APP_PATH,
-        options: {
+        loader: "babel-loader",
+        query: {
           compact: true,
-          presets: ['react']
+          presets: ['react'],
+          cacheDirectory: true,
+          plugins: [
+            ["import", { libraryName: "antd-mobile", style: "css"}],
+            ["import", { libraryName: "antd-mobile", libraryDirectory: "lib"}, "antd-mobile"]
+          ]
         }
       },
       /*{

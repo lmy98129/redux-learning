@@ -4,7 +4,8 @@ export const actionTypes = {
   GET_VALUE_LOADING: 'SCHEDULE/GET_VALUE_LOADING',
   GET_VALUE_SUCCESS: 'SCHEDULE/GET_VALUE_SUCCESS',
   GET_VALUE_FAILED: 'SCHEDULE/GET_VALUE_FAILED',
-  ADD_RECORD: 'SCHEDULE/ADD_RECORD'
+  ADD_COURSE: 'SCHEDULE/ADD_COURSE',
+  EDIT_COURSE: 'SCHEDULE/EDIT_COURSE'
 }
 
 export default (state = { value: "Loading" }, action) => {
@@ -16,11 +17,21 @@ export default (state = { value: "Loading" }, action) => {
     case 'SCHEDULE/GET_VALUE_SUCCESS':
       return {
         value: "Success",
-        payload: JSON.stringify(action.payload)
+        payload: action.payload
       }
     case 'SCHEDULE/GET_VALUE_FAILED':
       return {
         value: "Failed"
+      }
+    case 'SCHEDULE/ADD_COURSE':
+      return {
+        value: "Added",
+        payload: action.payload
+      }
+    case 'SCHEDULE/EDIT_COURSE':
+      return {
+        value: "Edited",
+        payload: action.payload
       }
     default:
       return state
@@ -30,10 +41,16 @@ export default (state = { value: "Loading" }, action) => {
 export const mapStateToProps = (state) => {
   let props = {
     value: state.schedule.value,
-    payload: ""
   }
-  if (state.schedule.value === "Success") {
-    props.payload = JSON.parse(state.schedule.payload)
+  switch(state.schedule.value) {
+    case "Success":
+    case "Added":
+    case "Edited":
+      props.payload = state.schedule.payload
+      break;
+    default:
+      props.payload = {} 
+      break;
   }
   return props;
 }
@@ -42,6 +59,7 @@ export const mapDispatchToProps = (dispatch) => {
   return {
     getValue: () => {
       scheduleGetter(
+        // '/login',
         'http://xbeta.club/login', 
         // 'http://localhost:7001/login',
         {
@@ -61,13 +79,14 @@ export const mapDispatchToProps = (dispatch) => {
         },
         dispatch
       )
-    }
+    },
+    addCourse: (content, newCourse) => scheduleAdder(content, newCourse, dispatch)
   }
 }
 
 const defaultColor = ["#f05261", "#48a8e4", "#ffd061", "#52db9a", "#70d3e6", "#52db9a", "#3f51b5", "#f3d147", "#4adbc3", "#673ab7", "#f3db49", "#76bfcd", "#b495e1", "#ff9800", "#8bc34a"];
 
-export const scheduleGetter = (url, init, dispatch) => {
+const scheduleGetter = (url, init, dispatch) => {
   dispatch({ type: actionTypes.GET_VALUE_LOADING });
   return new Promise(() => {
     return fetch(url, {
@@ -97,6 +116,7 @@ export const scheduleGetter = (url, init, dispatch) => {
           }
         }
       }
+      console.log(schedule);
       dispatch({
         type: actionTypes.GET_VALUE_SUCCESS,
         payload: schedule
@@ -106,4 +126,9 @@ export const scheduleGetter = (url, init, dispatch) => {
       dispatch({type: actionTypes.GET_VALUE_FAILED})
     })
   })
+}
+
+const scheduleAdder = (content, newCourse, dispatch) => {
+  content[String(newCourse.dayOfWeek)][String(newCourse.section)] = newCourse;
+  dispatch({type: actionTypes.ADD_COURSE, payload: content});
 }
