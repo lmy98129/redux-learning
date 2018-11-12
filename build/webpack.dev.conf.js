@@ -18,7 +18,10 @@ module.exports = merge(baseWebpackConfig, {
       },
       hash: false
     }),
-    new webpack.HotModuleReplacementPlugin()
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.DefinePlugin({
+      host: "''"
+    })
   ],
   devServer: {
     port: '3000',

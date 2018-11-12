@@ -60,7 +60,7 @@ export const mapDispatchToProps = (dispatch) => {
     getValue: () => {
       scheduleGetter(
         // '/login',
-        'http://xbeta.club/login', 
+        host + '/login', 
         // 'http://localhost:7001/login',
         {
           method: 'POST',
