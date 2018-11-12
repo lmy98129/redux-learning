@@ -11,58 +11,57 @@ class Table extends Component {
     getValue();
   }
   render() {
-    const { value, payload, addCourse } = this.props;
-    let arr = [];
-    for(let i=0; i<6; i++) {
-      arr.push("");
-    }
-    if (value !== "Success") {
-      return (  
-        <div className="loading-status">{value}</div>
-      )
-    } else {
-      return (
-        <table className="course-table">
-          <thead>
-            <tr className="course-table-head">
-              <th></th>
-              <th>周一</th>
-              <th>周二</th>
-              <th>周三</th>
-              <th>周四</th>
-              <th>周五</th>
-              <th>周六</th>
-              <th>周日</th>
-            </tr>
-          </thead>
-          <tbody>
-            {
-              Object.keys(payload).map((time) => {
-                return (
-                  <tr key={'ul_'+ time} className="course-table-line">
-                    <th className="course-table-left-side">
-                      {time}
-                      <br/>
-                      {timeRange[time].start}
-                      <br/>
-                      |
-                      <br/>
-                      {timeRange[time].end}
-                    </th>
-                    {
-                      Object.keys(payload[time]).map((date) => {
-                        return (
-                          <Grid content={payload[time][date]} key={'li_'+date} addCourse={addCourse} fullContent={payload}/>
-                        )
-                      })
-                    }
-                  </tr>
-                  )
-              })
-            }
-          </tbody>
-        </table>
-      )
+    const { value, payload } = this.props;
+    console.log(this.props);
+    switch(value) {
+      case "Loading":
+      case "Failed":
+        return (  
+          <div className="loading-status">{value}</div>
+        )
+      default:
+        return (
+          <table className="course-table">
+            <thead>
+              <tr className="course-table-head">
+                <th></th>
+                <th>周一</th>
+                <th>周二</th>
+                <th>周三</th>
+                <th>周四</th>
+                <th>周五</th>
+                <th>周六</th>
+                <th>周日</th>
+              </tr>
+            </thead>
+            <tbody>
+              {
+                Object.keys(payload).map((time) => {
+                  return (
+                    <tr key={'ul_'+ time} className="course-table-line">
+                      <th className="course-table-left-side">
+                        {time}
+                        <br/>
+                        {timeRange[time].start}
+                        <br/>
+                        |
+                        <br/>
+                        {timeRange[time].end}
+                      </th>
+                      {
+                        Object.keys(payload[time]).map((date) => {
+                          return (
+                            <Grid content={payload[time][date]} key={'li_'+date} time={time} date={date}/>
+                          )
+                        })
+                      }
+                    </tr>
+                    )
+                })
+              }
+            </tbody>
+          </table>
+        )
     }
   }
 }

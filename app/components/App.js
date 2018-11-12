@@ -2,7 +2,7 @@ import React from 'react'
 import Table from './Table'
 import './App.css'
 import { connect } from 'react-redux'
-import { mapDispatchToProps } from '../redux/modules/schedule';
+import { mapDispatchToProps } from '../redux/modules/schedule'
 
 const App = ({ getValue }) => {
   return (
@@ -11,7 +11,7 @@ const App = ({ getValue }) => {
         <Table />
       </div>
       <div className="button-holder"></div>
-      <button onClick={getValue} className="load-btn">刷新课表</button>
+      <button onClick={ getValue } className="load-btn">刷新课表</button>
     </div>
   )
 }

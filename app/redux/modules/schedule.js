@@ -8,7 +8,7 @@ export const actionTypes = {
   EDIT_COURSE: 'SCHEDULE/EDIT_COURSE'
 }
 
-export default (state = { value: "Loading" }, action) => {
+export default (state = { value: "Loading", payload: {} }, action) => {
   switch (action.type) {
     case 'SCHEDULE/GET_VALUE_LOADING':
       return {
@@ -25,7 +25,7 @@ export default (state = { value: "Loading" }, action) => {
       }
     case 'SCHEDULE/ADD_COURSE':
       return {
-        value: "Added",
+        value: state.value === "Success" ? "Added" : "Success",
         payload: action.payload
       }
     case 'SCHEDULE/EDIT_COURSE':
@@ -42,16 +42,20 @@ export const mapStateToProps = (state) => {
   let props = {
     value: state.schedule.value,
   }
-  switch(state.schedule.value) {
-    case "Success":
-    case "Added":
-    case "Edited":
-      props.payload = state.schedule.payload
-      break;
-    default:
-      props.payload = {} 
-      break;
-  }
+  if (state.schedule.payload !== {} &&
+    state.schedule.payload !== undefined) {
+      props.payload = state.schedule.payload;
+    }
+  // switch(state.schedule.value) {
+  //   case "Success":
+  //   case "Added":
+  //   case "Edited":
+  //     props.payload = state.schedule.payload
+  //     break;
+  //   default:
+  //     props.payload = {} 
+  //     break;
+  // }
   return props;
 }
 
@@ -75,23 +79,45 @@ export const mapDispatchToProps = (dispatch) => {
             stuNo: '41624140',
           }),
           credentials: 'include',
-          mode: "cors"
+          // mode: "cors"
         },
         dispatch
       )
     },
-    addCourse: (content, newCourse) => scheduleAdder(content, newCourse, dispatch)
+    addCourse: (content, time, date,) => scheduleAdder(content, time, date, dispatch)
   }
 }
 
-const defaultColor = ["#f05261", "#48a8e4", "#ffd061", "#52db9a", "#70d3e6", "#52db9a", "#3f51b5", "#f3d147", "#4adbc3", "#673ab7", "#f3db49", "#76bfcd", "#b495e1", "#ff9800", "#8bc34a"];
+const defaultColor = ["#f05261", "#48a8e4", "#ffd061", "#52db9a", "#70d3e6", "#3f51b5", "#f3d147", "#4adbc3", "#673ab7", "#f3db49", "#76bfcd", "#b495e1", "#ff9800", "#8bc34a"];
+
+const setColor = (schedule) => {
+  let colorMap = {}, counter = 0;
+  for (let time=1; time<=6; time++) {
+    for (let date=1; date<=7; date++) {
+      for (let index=0; index<schedule[String(time)][String(date)].length; index++) {
+        let item = schedule[String(time)][String(date)][index],
+          name = item.courseName;
+        if (!colorMap[name]) {
+          colorMap[name] = defaultColor[counter];
+          schedule[String(time)][String(date)][index].color = defaultColor[counter];
+          counter++;
+          if (counter >= defaultColor.length) {
+            counter = 0;
+          }
+        } else {
+          schedule[String(time)][String(date)][index].color = colorMap[name];
+        }
+      }
+    }
+  }
+}
 
 const scheduleGetter = (url, init, dispatch) => {
   dispatch({ type: actionTypes.GET_VALUE_LOADING });
   return new Promise(() => {
     return fetch(url, {
       method: 'GET',
-      mode: "cors",
+      // mode: "cors",
     })
     .then(() => {
       init.headers.csrftoken = qs.parse(document.cookie).csrfToken;
@@ -100,22 +126,7 @@ const scheduleGetter = (url, init, dispatch) => {
     .then(res => res.json())
     .then(res => {
       let schedule = res.data.body.map;
-      let colorMap = {}, counter = 0;
-      for (let time=1; time<=6; time++) {
-        for (let date=1; date<=7; date++) {
-          for (let index=0; index<schedule[String(time)][String(date)].length; index++) {
-            let item = schedule[String(time)][String(date)][index],
-              name = item.courseName;
-            if (!colorMap[name]) {
-              colorMap[name] = defaultColor[counter];
-              schedule[String(time)][String(date)][index].color = defaultColor[counter];
-              counter++;
-            } else {
-              schedule[String(time)][String(date)][index].color = colorMap[name];
-            }
-          }
-        }
-      }
+      setColor(schedule);
       console.log(schedule);
       dispatch({
         type: actionTypes.GET_VALUE_SUCCESS,
@@ -128,7 +139,16 @@ const scheduleGetter = (url, init, dispatch) => {
   })
 }
 
-const scheduleAdder = (content, newCourse, dispatch) => {
-  content[String(newCourse.dayOfWeek)][String(newCourse.section)] = newCourse;
-  dispatch({type: actionTypes.ADD_COURSE, payload: content});
+export const scheduleAdder = (content, time, date, dispatch) => {
+  // content[String(newCourse.section)][String(newCourse.dayOfWeek)] = newCourse;
+  let newCourse = {
+    SKZCZFC: "10-12周",
+    courseName: "测试课程",
+    "classroom.roomNickname": "测试地点"
+  }
+  content[time][date].push(newCourse);
+  setColor(content);
+  console.log(content);
+  return dispatch({type: actionTypes.ADD_COURSE, payload: content})
+  // return dispatch({type: actionTypes.GET_VALUE_FAILED});
 }
