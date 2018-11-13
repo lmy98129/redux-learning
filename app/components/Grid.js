@@ -7,15 +7,14 @@ import { connect } from 'react-redux'
 
 const operation = Modal.operation;
 
-const Grid = ({ 
-    content, 
+const Grid = ({
     schedule, 
     addCourse, 
-    deleteCourse, 
     time, 
     date,
     history
   }) => {
+    const content = schedule[time][date];
     if (content.length === 0) {
       return (<td className="course-table-grid" onClick={() => operation([
         { text: '添加课程', onPress: () => addCourse(schedule, time, date) },
@@ -23,9 +22,8 @@ const Grid = ({
     } else {
       return(
         <td className="course-table-grid" onClick={() => operation([
-          { text: '课程详情', onPress: () => history.push({ pathname: '/info', content, time, date }) },
+          { text: '课程详情', onPress: () => history.push({ pathname: '/info', time, date }) },
           { text: '添加课程', onPress: () => addCourse(schedule, time, date) },
-          { text: '删除课程', onPress: () => deleteCourse(schedule, time, date) },
         ])}>
           <div className="course-table-grid-content-wrapper"  style={{background:content[0].color}}>
             <div className="course-table-grid-content">
@@ -44,7 +42,8 @@ const Grid = ({
   }
 
 Grid.propTypes = {
-  content: PropTypes.array.isRequired
+  time: PropTypes.string.isRequired,
+  date: PropTypes.string.isRequired
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Grid);

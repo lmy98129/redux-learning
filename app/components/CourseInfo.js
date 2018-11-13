@@ -1,35 +1,84 @@
 import React, { Component, Fragment } from 'react'
 import { Redirect } from 'react-router-dom'
-import { NavBar, Icon, Card, WhiteSpace, Button } from 'antd-mobile'
+import { Card, WhiteSpace, Button, Popover, Icon } from 'antd-mobile'
+import NavBar from './NavBar'
+import './CourseInfo.css'
+import { connect } from 'react-redux'
+import { mapDispatchToProps, mapStateToProps } from '../redux/modules/schedule';
+
+const Item = Popover.Item;
 
 class CourseInfo extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      redirect: false
+      popVisible: false,
     }
   }
-  handleClick = () => {
+
+  componentDidUpdate() {
+    switch(this.props.value) {
+      case "Edited":
+        this.props.returnToSuccess(this.props.schedule);
+        break;
+      default:
+        break;
+    }
+  }
+
+  onSelect = (opt) => {
+    const { time, date } = this.props.history.location;
     this.setState({
-      redirect: true
+      popVisible: false,
+    })
+    switch(opt.props.value) {
+      case "Add":
+        this.props.addCourse(this.props.schedule, time, date);
+        break;
+    }
+  }
+
+  handlePopVisibleChange = (visible) => {
+    this.setState({
+      visible
     })
   }
+
   render() {
-    if (this.state.redirect || !this.props.history.location.content) {
+    const { time, date } = this.props.history.location;
+    if (!time || !date) {
       return <Redirect push to="/"/>
-    }
-
-    const { content, time, date } = this.props.history.location;
-
+    } 
+    const content = this.props.schedule[time][date];
+    const backValue = this.props.history.location;
+    const history = this.props.history;
     return (
       <Fragment>
         <NavBar 
-          mode="light"
-          icon={<Icon type="left" />}
-          onLeftClick={() => {this.handleClick()}}
-          rightContent={[
-            <Icon key='0' type="ellipsis" />
-          ]}
+          history={history}
+          rightContent={
+            <Popover
+              visible={this.state.popVisible}
+              overlay={[
+                <Item key='0' value="Add" style={{ whiteSpace: 'nowrap' }}>添加课程</Item>
+              ]}
+              align={{
+                overflow: { adjustY: 0, adjustX: 0 },
+                offset: [-16, 0],
+              }}
+              onVisibleChange={this.handlePopVisibleChange}
+              onSelect={this.onSelect}
+            >
+              <div style={{
+                height: '100%',
+                padding: '0 15px',
+                display: 'flex',
+                alignItems: 'center',
+              }}>
+                <Icon type="ellipsis" />
+              </div>
+            </Popover>
+          }
         >课程详情</NavBar>
         <WhiteSpace size="lg"/>
         {
@@ -39,13 +88,28 @@ class CourseInfo extends Component {
               <Card full>
                 <Card.Header 
                   title={item.courseName}
-                  extra={<Button type="ghost" inline size="small">编辑</Button>}
+                  extra={
+                    <Fragment>
+                      <Button 
+                        type="ghost" 
+                        inline size="small" 
+                        onClick={() => history.push({ pathname: '/edit', editStatus: 'edit', backValue, index })} 
+                        style={{marginRight: "5px"}}
+                      >编辑</Button>
+                      <Button
+                        type="warning"
+                        inline size="small"
+                        onClick={() => this.props.deleteCourse(this.props.schedule, time, date, index)}
+                      >删除</Button>
+                    </Fragment>
+
+                  }
                 />
                 <Card.Body>
-                  <div>教室 {item["classroom.roomNickname"]}</div>
-                  <div>周数 {item.SKZCZFC}</div>
-                  <div>节数 周{date} 第{time}节</div>
-                  <div>教师 暂不支持 </div>
+                  <div className="item-wrap">教室 {item["classroom.roomNickname"]}</div>
+                  <div className="item-wrap">周数 {item.SKZCZFC}</div>
+                  <div className="item-wrap">节数 周{date} 第{time}节</div>
+                  <div className="item-wrap">教师 (暂不支持) </div>
                 </Card.Body>
               </Card>
               <WhiteSpace size="sm" />
@@ -53,9 +117,14 @@ class CourseInfo extends Component {
             )
           })
         }
+        <WhiteSpace size="lg"/>
+        <WhiteSpace size="lg"/>
       </Fragment>
     )
   }
 }
 
-export default CourseInfo
+export default connect(
+  mapStateToProps, 
+  mapDispatchToProps
+)(CourseInfo);

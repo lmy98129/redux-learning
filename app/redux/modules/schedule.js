@@ -70,7 +70,7 @@ export const mapDispatchToProps = (dispatch) => {
       )
     },
     addCourse: (schedule, time, date) => scheduleAdder(schedule, time, date, dispatch),
-    deleteCourse: (schedule, time, date) => scheduleDelete(schedule, time, date, dispatch),
+    deleteCourse: (schedule, time, date, index) => scheduleDelete(schedule, time, date, index, dispatch),
     returnToSuccess: (schedule) => dispatch({ type:actionTypes.GET_VALUE_SUCCESS, schedule}),
   }
 }
@@ -139,8 +139,8 @@ const scheduleAdder = (schedule, time, date, dispatch) => {
   return dispatch({ type: actionTypes.EDIT_COURSE, schedule })
 }
 
-const scheduleDelete = (schedule, time, date, dispatch) => {
-  schedule[time][date] = [];
+const scheduleDelete = (schedule, time, date, index, dispatch) => {
+  schedule[time][date].splice(index, 1);
   setColor(schedule);
   console.log(schedule);
   return dispatch({ type: actionTypes.EDIT_COURSE, schedule })

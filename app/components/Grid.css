@@ -34,7 +34,7 @@
 
 @media screen and (max-width:500px) {
   .course-table-grid {
-    font-size: 1.0rem!important;
+    font-size: 1.3rem!important;
   }
   .course-table-grid-content {
     padding-top: 4px;
@@ -50,6 +50,18 @@
   } */
   .course-table-grid-content .content-lower .content-classroom {
     font-size: 0.9rem;
+  }
+}
+
+@media screen and (max-width:400px) {
+  .course-table-grid {
+    font-size: 1.0rem!important;
+  }
+}
+
+@media screen and (min-width:760px) {
+  .course-table-grid {
+    font-size: 1.6rem!important;
   }
 }
 

@@ -73,7 +73,7 @@ class Table extends Component {
                       {
                         Object.keys(schedule[time]).map((date) => {
                           return (
-                            <Grid content={schedule[time][date]} key={'li_'+date} time={time} date={date} history={history}/>
+                            <Grid key={'li_'+date} time={time} date={date} history={history}/>
                           )
                         })
                       }
