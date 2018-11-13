@@ -1,6 +1,7 @@
-import React, { Component} from 'react'
+import React, { Component, Fragment } from 'react'
 import { NavBar, Icon } from 'antd-mobile'
 import PropTypes from 'prop-types'
+import './NavBar.css'
 
 class CustomedNavBar extends Component {
   constructor(props) {
@@ -22,13 +23,16 @@ class CustomedNavBar extends Component {
       rightContent = <div></div>
     }
     return (
-      <NavBar 
-        mode="light"
-        icon={<Icon type="left" />}
-        leftContent="返回"
-        onLeftClick={this.handleClick}
-        rightContent={rightContent}
-      >{title}</NavBar>
+      <Fragment>
+        <NavBar 
+          mode="light"
+          icon={<Icon type="left" />}
+          leftContent="返回"
+          onLeftClick={this.handleClick}
+          rightContent={rightContent}
+        >{title}</NavBar>
+        <div className="navbar-holder" style={{height: "3.3rem"}}></div>
+      </Fragment>
     )
   }
 }

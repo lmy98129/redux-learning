@@ -69,8 +69,9 @@ export const mapDispatchToProps = (dispatch) => {
         dispatch
       )
     },
-    addCourse: (schedule, time, date) => scheduleAdder(schedule, time, date, dispatch),
+    addCourse: (schedule, time, date, newCourse) => scheduleAdder(schedule, time, date, newCourse, dispatch),
     deleteCourse: (schedule, time, date, index) => scheduleDelete(schedule, time, date, index, dispatch),
+    updateCourse: (schedule, time, date, index, newValue) => scheduleUpdate(schedule, time, date, index, newValue, dispatch),
     returnToSuccess: (schedule) => dispatch({ type:actionTypes.GET_VALUE_SUCCESS, schedule}),
   }
 }
@@ -126,13 +127,13 @@ const scheduleGetter = (url, init, dispatch) => {
   })
 }
 
-const scheduleAdder = (schedule, time, date, dispatch) => {
+const scheduleAdder = (schedule, time, date, newCourse, dispatch) => {
   // schedule[String(newCourse.section)][String(newCourse.dayOfWeek)] = newCourse;
-  let newCourse = {
-    SKZCZFC: "10-12周",
-    courseName: "测试课程",
-    "classroom.roomNickname": "测试地点"
-  }
+  // let newCourse = {
+  //   SKZCZFC: "10-12周",
+  //   courseName: "测试课程",
+  //   "classroom.roomNickname": "测试地点"
+  // }
   schedule[time][date].push(newCourse);
   setColor(schedule);
   console.log(schedule);
@@ -141,6 +142,13 @@ const scheduleAdder = (schedule, time, date, dispatch) => {
 
 const scheduleDelete = (schedule, time, date, index, dispatch) => {
   schedule[time][date].splice(index, 1);
+  setColor(schedule);
+  console.log(schedule);
+  return dispatch({ type: actionTypes.EDIT_COURSE, schedule })
+}
+
+const scheduleUpdate = (schedule, time, date, index, newValue, dispatch) => {
+  Object.assign(schedule[time][date][index], newValue);
   setColor(schedule);
   console.log(schedule);
   return dispatch({ type: actionTypes.EDIT_COURSE, schedule })

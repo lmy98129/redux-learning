@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import { Redirect } from 'react-router-dom'
-import { Card, WhiteSpace, Button, Popover, Icon } from 'antd-mobile'
+import { Card, WhiteSpace, Button, Popover, Icon, WingBlank } from 'antd-mobile'
 import NavBar from './NavBar'
 import './CourseInfo.css'
 import { connect } from 'react-redux'
@@ -81,42 +81,44 @@ class CourseInfo extends Component {
           }
         >课程详情</NavBar>
         <WhiteSpace size="lg"/>
-        {
-          content.map((item, index) => {
-            return (
-            <Fragment key={index}>
-              <Card full>
-                <Card.Header 
-                  title={item.courseName}
-                  extra={
-                    <Fragment>
-                      <Button 
-                        type="ghost" 
-                        inline size="small" 
-                        onClick={() => history.push({ pathname: '/edit', editStatus: 'edit', backValue, index })} 
-                        style={{marginRight: "5px"}}
-                      >编辑</Button>
-                      <Button
-                        type="warning"
-                        inline size="small"
-                        onClick={() => this.props.deleteCourse(this.props.schedule, time, date, index)}
-                      >删除</Button>
-                    </Fragment>
+        <WingBlank size="lg">
+          {
+            content.map((item, index) => {
+              return (
+              <Fragment key={index}>
+                <Card>
+                  <Card.Header 
+                    title={item.courseName}
+                    extra={
+                      <Fragment>
+                        <Button 
+                          type="ghost" 
+                          inline size="small" 
+                          onClick={() => history.push({ pathname: '/edit', editStatus: 'edit', backValue, index })} 
+                          style={{marginRight: "5px"}}
+                        >编辑</Button>
+                        <Button
+                          type="warning"
+                          inline size="small"
+                          onClick={() => this.props.deleteCourse(this.props.schedule, time, date, index)}
+                        >删除</Button>
+                      </Fragment>
 
-                  }
-                />
-                <Card.Body>
-                  <div className="item-wrap">教室 {item["classroom.roomNickname"]}</div>
-                  <div className="item-wrap">周数 {item.SKZCZFC}</div>
-                  <div className="item-wrap">节数 周{date} 第{time}节</div>
-                  <div className="item-wrap">教师 (暂不支持) </div>
-                </Card.Body>
-              </Card>
-              <WhiteSpace size="sm" />
-            </Fragment>
-            )
-          })
-        }
+                    }
+                  />
+                  <Card.Body>
+                    <div className="item-wrap">教室 {item["classroom.roomNickname"]}</div>
+                    <div className="item-wrap">周数 {item.SKZCZFC}</div>
+                    <div className="item-wrap">节数 周{date} 第{time}节</div>
+                    <div className="item-wrap">教师 (暂不支持) </div>
+                  </Card.Body>
+                </Card>
+                <WhiteSpace size="sm" />
+              </Fragment>
+              )
+            })
+          }
+        </WingBlank>
         <WhiteSpace size="lg"/>
         <WhiteSpace size="lg"/>
       </Fragment>

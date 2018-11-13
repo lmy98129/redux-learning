@@ -9,22 +9,28 @@ const operation = Modal.operation;
 
 const Grid = ({
     schedule, 
-    addCourse, 
+    // addCourse, 
     time, 
     date,
     history
   }) => {
     const content = schedule[time][date];
+    const backValue = history.location;
     if (content.length === 0) {
       return (<td className="course-table-grid" onClick={() => operation([
-        { text: '添加课程', onPress: () => addCourse(schedule, time, date) },
+        // { text: '添加课程', onPress: () => addCourse(schedule, time, date) },
+        { text: '添加课程', onPress: () => history.push({ pathname: '/edit', editStatus: 'add', backValue, time, date }) }
       ])}></td>)
     } else {
       return(
-        <td className="course-table-grid" onClick={() => operation([
-          { text: '课程详情', onPress: () => history.push({ pathname: '/info', time, date }) },
-          { text: '添加课程', onPress: () => addCourse(schedule, time, date) },
-        ])}>
+        <td className="course-table-grid" onClick={() => 
+          // operation([
+          //   { text: '课程详情', onPress: () => 
+              history.push({ pathname: '/info', time, date }) 
+          //   },
+          //   { text: '添加课程', onPress: () => addCourse(schedule, time, date) },
+          // ])
+          }>
           <div className="course-table-grid-content-wrapper"  style={{background:content[0].color}}>
             <div className="course-table-grid-content">
               <div className="content-upper">{ content[0].courseName }<br/></div>
