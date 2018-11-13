@@ -46,7 +46,7 @@ export const mapStateToProps = (state) => {
 
 export const mapDispatchToProps = (dispatch) => {
   return {
-    getSchedule: () => {
+    getSchedule: (isRefresh) => {
       scheduleGetter(
         // '/login',
         host + '/login', 
@@ -66,6 +66,7 @@ export const mapDispatchToProps = (dispatch) => {
           credentials: 'include',
           // mode: "cors"
         },
+        isRefresh,
         dispatch
       )
     },
@@ -100,8 +101,15 @@ const setColor = (schedule) => {
   }
 }
 
-const scheduleGetter = (url, init, dispatch) => {
+const scheduleGetter = (url, init, isRefresh, dispatch) => {
   dispatch({ type: actionTypes.GET_VALUE_LOADING });
+  let schedule = localStorage.getItem('schedule');
+  if (schedule && !isRefresh) {
+    return dispatch({
+      type: actionTypes.GET_VALUE_SUCCESS,
+      schedule: JSON.parse(schedule)
+    })
+  } else
   return new Promise(() => {
     return fetch(url, {
       method: 'GET',
@@ -113,9 +121,10 @@ const scheduleGetter = (url, init, dispatch) => {
     })
     .then(res => res.json())
     .then(res => {
-      let schedule = res.data.body.map;
+      schedule = res.data.body.map;
       setColor(schedule);
       console.log(schedule);
+      localStorage.setItem('schedule', JSON.stringify(schedule));
       dispatch({
         type: actionTypes.GET_VALUE_SUCCESS,
         schedule: schedule
@@ -137,6 +146,7 @@ const scheduleAdder = (schedule, time, date, newCourse, dispatch) => {
   schedule[time][date].push(newCourse);
   setColor(schedule);
   console.log(schedule);
+  localStorage.setItem('schedule', JSON.stringify(schedule));
   return dispatch({ type: actionTypes.EDIT_COURSE, schedule })
 }
 
@@ -144,6 +154,7 @@ const scheduleDelete = (schedule, time, date, index, dispatch) => {
   schedule[time][date].splice(index, 1);
   setColor(schedule);
   console.log(schedule);
+  localStorage.setItem('schedule', JSON.stringify(schedule));
   return dispatch({ type: actionTypes.EDIT_COURSE, schedule })
 }
 
@@ -151,5 +162,6 @@ const scheduleUpdate = (schedule, time, date, index, newValue, dispatch) => {
   Object.assign(schedule[time][date][index], newValue);
   setColor(schedule);
   console.log(schedule);
+  localStorage.setItem('schedule', JSON.stringify(schedule));
   return dispatch({ type: actionTypes.EDIT_COURSE, schedule })
 }
