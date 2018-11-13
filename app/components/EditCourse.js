@@ -55,7 +55,7 @@ class EditCourse extends Component {
                   let fieldsValue = this.props.form.getFieldsValue();
                   fieldsValue["classroom.roomNickname"] = fieldsValue.classroom;
                   delete fieldsValue.classroom;
-                  delete fieldsValue.teacher;
+                  // delete fieldsValue.teacher;
                   console.log(fieldsValue);
                   switch(editStatus) {
                     case "edit":
@@ -136,12 +136,12 @@ class EditCourse extends Component {
               节数
             </InputItem>
             <InputItem
-              {...getFieldProps('teacher', {})}
+              // {...getFieldProps('teacher', {})}
               placeholder="(暂不支持)"
               defaultValue={teacher}
               disabled
             >
-              老师
+              教师
             </InputItem>
 
           </List>

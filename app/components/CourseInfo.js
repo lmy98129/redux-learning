@@ -27,13 +27,16 @@ class CourseInfo extends Component {
   }
 
   onSelect = (opt) => {
-    const { time, date } = this.props.history.location;
+    const history = this.props.history;
+    const { time, date } = history.location;
+    const backValue = history.location;
     this.setState({
       popVisible: false,
     })
     switch(opt.props.value) {
       case "Add":
-        this.props.addCourse(this.props.schedule, time, date);
+        // this.props.addCourse(this.props.schedule, time, date);
+        history.push({ pathname: '/edit', editStatus: 'add', backValue, time, date })
         break;
     }
   }
