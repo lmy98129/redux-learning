@@ -6,13 +6,32 @@ import './Table.css'
 import Grid from './Grid'
 
 class Table extends Component {
+  constructor(props) {
+    super(props);
+  }
   componentDidMount() {
-    const { getValue } = this.props;
-    getValue();
+    this.props.getSchedule();
+  }
+  componentDidUpdate() {
+    switch(this.props.value) {
+      case "Edited":
+        this.props.returnToSuccess(this.props.schedule);
+        break;
+      default:
+        break;
+    }
+  }
+  shouldComponentUpdate(nextProps) {
+    // console.log(this.props, nextProps);
+    switch(this.props.value) {
+      case "Edited":
+        if (nextProps.value === "Success")
+          return false
+        }
+    return true
   }
   render() {
-    const { value, payload } = this.props;
-    console.log(this.props);
+    const { value, schedule } = this.props;
     switch(value) {
       case "Loading":
       case "Failed":
@@ -36,7 +55,7 @@ class Table extends Component {
             </thead>
             <tbody>
               {
-                Object.keys(payload).map((time) => {
+                Object.keys(schedule).map((time) => {
                   return (
                     <tr key={'ul_'+ time} className="course-table-line">
                       <th className="course-table-left-side">
@@ -49,9 +68,9 @@ class Table extends Component {
                         {timeRange[time].end}
                       </th>
                       {
-                        Object.keys(payload[time]).map((date) => {
+                        Object.keys(schedule[time]).map((date) => {
                           return (
-                            <Grid content={payload[time][date]} key={'li_'+date} time={time} date={date}/>
+                            <Grid content={schedule[time][date]} key={'li_'+date} time={time} date={date}/>
                           )
                         })
                       }
@@ -68,8 +87,8 @@ class Table extends Component {
 
 Table.propTypes = {
   value: PropTypes.string.isRequired,
-  payload: PropTypes.object,
-  getValue: PropTypes.func.isRequired,
+  schedule: PropTypes.object,
+  getSchedule: PropTypes.func.isRequired,
 }
 
 const timeRange = {

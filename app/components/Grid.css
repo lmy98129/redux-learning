@@ -7,13 +7,13 @@
   cursor: pointer;
 }
 
-.course-table-grid-content .content-title {
+/* .course-table-grid-content .content-upper {
   max-height: 58%;
   text-overflow: ellipsis;
   overflow : hidden;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
-}
+} */
 
 .course-table-grid-content .content-hint {
   font-size: 10px;
@@ -23,13 +23,17 @@
   .course-table-grid {
     font-size: 10px;
   }
-  .course-table-grid-content .content-title {
-    max-height: 80%;
+  /* .course-table-grid-content .content-upper {
+    max-height: 70%;
     text-overflow: ellipsis;
     overflow : hidden;
     display: -webkit-box;
-    -webkit-line-clamp: 4;
+    -webkit-line-clamp: 3;
+    word-break: break-all;
     -webkit-box-orient: vertical;
+  } */
+  .course-table-grid-content .content-lower .content-classroom {
+    font-size: 9px;
   }
 }
 
@@ -41,10 +45,14 @@
 }
 
 .course-table-grid-content {
-  height: 100%;
+  height: 100px;
   position: absolute;
   width: 100%;
-  white-space: normal;
-  word-break: break-all;
-  padding-top: 4px
+  /* white-space: normal;
+  word-break: break-all; */
+  padding-top: 4px;
+  overflow: hidden;
+  /* display: flex;
+  flex-direction: column;
+  justify-content: space-between; */
 }

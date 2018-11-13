@@ -30,8 +30,9 @@
 
 .course-table-left-side {
   background-color: #f2f6f7;
-  width: 40px;
-  font-size: 12px;
+  width: 37px;
+  font-size: 10px;
+  font-weight: normal;
 }
 
 .course-table-line {

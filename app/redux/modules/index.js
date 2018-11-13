@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
-import schedule from './schedule';
+import scheduleReducer from './schedule';
 
 export default combineReducers({
-  schedule
+  scheduleReducer
 })

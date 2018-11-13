@@ -8,7 +8,7 @@ export const actionTypes = {
   EDIT_COURSE: 'SCHEDULE/EDIT_COURSE'
 }
 
-export default (state = { value: "Loading", payload: {} }, action) => {
+export default (state = { value: "Loading", schedule: {} }, action) => {
   switch (action.type) {
     case 'SCHEDULE/GET_VALUE_LOADING':
       return {
@@ -17,21 +17,16 @@ export default (state = { value: "Loading", payload: {} }, action) => {
     case 'SCHEDULE/GET_VALUE_SUCCESS':
       return {
         value: "Success",
-        payload: action.payload
+        schedule: action.schedule
       }
     case 'SCHEDULE/GET_VALUE_FAILED':
       return {
         value: "Failed"
       }
-    case 'SCHEDULE/ADD_COURSE':
-      return {
-        value: state.value === "Success" ? "Added" : "Success",
-        payload: action.payload
-      }
     case 'SCHEDULE/EDIT_COURSE':
       return {
         value: "Edited",
-        payload: action.payload
+        schedule: action.schedule
       }
     default:
       return state
@@ -40,28 +35,18 @@ export default (state = { value: "Loading", payload: {} }, action) => {
 
 export const mapStateToProps = (state) => {
   let props = {
-    value: state.schedule.value,
+    value: state.scheduleReducer.value,
   }
-  if (state.schedule.payload !== {} &&
-    state.schedule.payload !== undefined) {
-      props.payload = state.schedule.payload;
+  if (state.scheduleReducer.schedule !== {} &&
+    state.scheduleReducer.schedule !== undefined) {
+      props.schedule = state.scheduleReducer.schedule;
     }
-  // switch(state.schedule.value) {
-  //   case "Success":
-  //   case "Added":
-  //   case "Edited":
-  //     props.payload = state.schedule.payload
-  //     break;
-  //   default:
-  //     props.payload = {} 
-  //     break;
-  // }
   return props;
 }
 
 export const mapDispatchToProps = (dispatch) => {
   return {
-    getValue: () => {
+    getSchedule: () => {
       scheduleGetter(
         // '/login',
         host + '/login', 
@@ -84,7 +69,9 @@ export const mapDispatchToProps = (dispatch) => {
         dispatch
       )
     },
-    addCourse: (content, time, date,) => scheduleAdder(content, time, date, dispatch)
+    addCourse: (schedule, time, date) => scheduleAdder(schedule, time, date, dispatch),
+    deleteCourse: (schedule, time, date) => scheduleDelete(schedule, time, date, dispatch),
+    returnToSuccess: (schedule) => dispatch({ type:actionTypes.GET_VALUE_SUCCESS, schedule}),
   }
 }
 
@@ -130,7 +117,7 @@ const scheduleGetter = (url, init, dispatch) => {
       console.log(schedule);
       dispatch({
         type: actionTypes.GET_VALUE_SUCCESS,
-        payload: schedule
+        schedule: schedule
       })
     })
     .catch(err => {
@@ -139,16 +126,22 @@ const scheduleGetter = (url, init, dispatch) => {
   })
 }
 
-export const scheduleAdder = (content, time, date, dispatch) => {
-  // content[String(newCourse.section)][String(newCourse.dayOfWeek)] = newCourse;
+const scheduleAdder = (schedule, time, date, dispatch) => {
+  // schedule[String(newCourse.section)][String(newCourse.dayOfWeek)] = newCourse;
   let newCourse = {
     SKZCZFC: "10-12周",
     courseName: "测试课程",
     "classroom.roomNickname": "测试地点"
   }
-  content[time][date].push(newCourse);
-  setColor(content);
-  console.log(content);
-  return dispatch({type: actionTypes.ADD_COURSE, payload: content})
-  // return dispatch({type: actionTypes.GET_VALUE_FAILED});
+  schedule[time][date].push(newCourse);
+  setColor(schedule);
+  console.log(schedule);
+  return dispatch({ type: actionTypes.EDIT_COURSE, schedule })
+}
+
+const scheduleDelete = (schedule, time, date, dispatch) => {
+  schedule[time][date] = [];
+  setColor(schedule);
+  console.log(schedule);
+  return dispatch({ type: actionTypes.EDIT_COURSE, schedule })
 }
