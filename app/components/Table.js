@@ -10,6 +10,10 @@ class Table extends Component {
     super(props);
   }
   componentDidMount() {
+    console.log("From CDM", this.props.value);
+    if (this.props.value === "Success") {
+      return;
+    }
     this.props.getSchedule();
   }
   componentDidUpdate() {
@@ -31,7 +35,7 @@ class Table extends Component {
     return true
   }
   render() {
-    const { value, schedule } = this.props;
+    const { value, schedule, history } = this.props;
     switch(value) {
       case "Loading":
       case "Failed":
@@ -70,7 +74,7 @@ class Table extends Component {
                       {
                         Object.keys(schedule[time]).map((date) => {
                           return (
-                            <Grid content={schedule[time][date]} key={'li_'+date} time={time} date={date}/>
+                            <Grid content={schedule[time][date]} key={'li_'+date} time={time} date={date} history={history}/>
                           )
                         })
                       }

@@ -1,21 +1,17 @@
 import React from 'react'
-import Table from './Table'
-import './App.css'
-import { connect } from 'react-redux'
-import { mapDispatchToProps } from '../redux/modules/schedule'
+import Home from './Home'
+import CourseInfo from './CourseInfo'
+import { HashRouter, Route, Switch } from 'react-router-dom'
 
-const App = ({ getSchedule }) => {
+const App = () => {
   return (
-    <div>
-      <div className="course-table-wrapper">
-        <Table />
-      </div>
-      <div className="button-holder"></div>
-      <button onClick={ getSchedule } className="load-btn">刷新课表</button>
-    </div>
+    <HashRouter>
+      <Switch>
+        <Route exact path="/" component={Home} />
+        <Route exact path="/info" component={CourseInfo} />
+      </Switch>
+    </HashRouter>
   )
 }
 
-export default connect(null, mapDispatchToProps)(App)
-
-
+export default App;

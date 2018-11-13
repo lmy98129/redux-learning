@@ -13,7 +13,8 @@ const Grid = ({
     addCourse, 
     deleteCourse, 
     time, 
-    date 
+    date,
+    history
   }) => {
     if (content.length === 0) {
       return (<td className="course-table-grid" onClick={() => operation([
@@ -22,7 +23,7 @@ const Grid = ({
     } else {
       return(
         <td className="course-table-grid" onClick={() => operation([
-          { text: '课程信息', onPress: () => console.log('标为未读被点击了') },
+          { text: '课程信息', onPress: () => history.push('/info') },
           { text: '添加课程', onPress: () => addCourse(schedule, time, date) },
           { text: '编辑课程', onPress: () => console.log('置顶聊天被点击了') },
           { text: '删除课程', onPress: () => deleteCourse(schedule, time, date) },

@@ -21,7 +21,13 @@ module.exports = {
         loader: "babel-loader",
         query: {
           compact: true,
-          presets: ['react', 'env'],
+          presets: [
+            [
+              "es2015", { "modules": false }
+            ],
+            "stage-0",
+            "react"
+          ],
           cacheDirectory: true,
           plugins: [
             ["import", { libraryName: "antd-mobile", style: "css"}],
