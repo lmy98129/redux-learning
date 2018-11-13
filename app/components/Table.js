@@ -10,7 +10,6 @@ class Table extends Component {
     super(props);
   }
   componentDidMount() {
-    console.log("From CDM", this.props.value);
     if (this.props.value === "Success") {
       return;
     }

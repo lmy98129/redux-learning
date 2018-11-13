@@ -23,9 +23,8 @@ const Grid = ({
     } else {
       return(
         <td className="course-table-grid" onClick={() => operation([
-          { text: '课程信息', onPress: () => history.push('/info') },
+          { text: '课程详情', onPress: () => history.push({ pathname: '/info', content, time, date }) },
           { text: '添加课程', onPress: () => addCourse(schedule, time, date) },
-          { text: '编辑课程', onPress: () => console.log('置顶聊天被点击了') },
           { text: '删除课程', onPress: () => deleteCourse(schedule, time, date) },
         ])}>
           <div className="course-table-grid-content-wrapper"  style={{background:content[0].color}}>
