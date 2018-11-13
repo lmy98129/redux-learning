@@ -116,7 +116,7 @@ class CourseInfo extends Component {
                     <div className="item-wrap">教师 (暂不支持) </div>
                   </Card.Body>
                 </Card>
-                <WhiteSpace size="sm" />
+                <WhiteSpace size="md" />
               </Fragment>
               )
             })

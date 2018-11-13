@@ -132,6 +132,8 @@ class EditCourse extends Component {
               })}
               placeholder="请输入上课节数"
               clear
+              // disabled
+              editable={false}
             >
               节数
             </InputItem>

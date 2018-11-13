@@ -3,10 +3,17 @@ import Table from './Table'
 import './Home.css'
 import { connect } from 'react-redux'
 import { mapDispatchToProps } from '../redux/modules/schedule'
+import NavBar from './NavBar'
 
 const Home = ({ getSchedule, history }) => {
   return (
     <Fragment>
+      <NavBar
+        icon={<div></div>}
+        leftContent=" "
+      >
+        iCourse 课表
+      </NavBar>
       <div className="course-table-wrapper">
         <Table history={history} />
       </div>

@@ -18,20 +18,26 @@ class CustomedNavBar extends Component {
   
   render() {
     const title = this.props.children;
-    let { rightContent } = this.props;
+    let { rightContent, icon, leftContent } = this.props;
     if (!rightContent) {
       rightContent = <div></div>
+    }
+    if (!icon) {
+      icon = <Icon type="left" />
+    }
+    if (!leftContent) {
+      leftContent = "返回"
     }
     return (
       <Fragment>
         <NavBar 
           mode="light"
-          icon={<Icon type="left" />}
-          leftContent="返回"
+          icon={icon}
+          leftContent={leftContent}
           onLeftClick={this.handleClick}
           rightContent={rightContent}
         >{title}</NavBar>
-        <div className="navbar-holder" style={{height: "3.3rem"}}></div>
+        <div className="navbar-holder" style={{height: "4rem"}}></div>
       </Fragment>
     )
   }
