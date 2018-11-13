@@ -1,6 +1,6 @@
 .loading-status {
   text-align: center;
-  font-size: 18px;
+  font-size: 1.8rem;
   position: fixed;
   top: 45%;
   margin: 0 auto;
@@ -18,7 +18,7 @@
 .course-table-head {
   border-bottom: 1px solid rgba(0, 0, 0, 0.1) !important;
   background-color: #f2f6f7;
-  font-size: 14px;
+  font-size: 1.4rem;
   line-height: 28px;
   text-align: center;
   white-space: nowrap;
@@ -26,12 +26,13 @@
 
 .course-table-head th {
   font-weight: normal;
+  font-size: 1.4rem
 }
 
 .course-table-left-side {
   background-color: #f2f6f7;
   width: 37px;
-  font-size: 10px;
+  font-size: 1.4rem;
   font-weight: normal;
 }
 

@@ -2,6 +2,10 @@
   -webkit-tap-highlight-color: transparent;
 }
 
+html {
+  font-size: 62.5%!important;/*10 ÷ 16 × 100% = 62.5%*/
+}
+
 button {
   outline: none;
 }
@@ -11,7 +15,7 @@ button {
   border: 1px solid #aaa;
   border-radius: 16px;
   background: #fff;
-  font-size: 15px;
+  font-size: 1.5rem;
   padding: 6px 0px;
   margin: 18px auto;
   position: fixed;
@@ -27,7 +31,7 @@ button {
 }
 
 .course-table-wrapper {
-  width: 50%;
+  width: 70%;
   margin: 0 auto;
 }
 

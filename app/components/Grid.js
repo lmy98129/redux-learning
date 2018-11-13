@@ -7,9 +7,14 @@ import { connect } from 'react-redux'
 
 const operation = Modal.operation;
 
-class Grid extends Component {
-  render() {
-    const { content, schedule, addCourse, deleteCourse, time, date } = this.props;
+const Grid = ({ 
+    content, 
+    schedule, 
+    addCourse, 
+    deleteCourse, 
+    time, 
+    date 
+  }) => {
     if (content.length === 0) {
       return (<td className="course-table-grid" onClick={() => operation([
         { text: '添加课程', onPress: () => addCourse(schedule, time, date) },
@@ -36,8 +41,7 @@ class Grid extends Component {
         </td>
       )
     }
-  } 
-}
+  }
 
 Grid.propTypes = {
   content: PropTypes.array.isRequired

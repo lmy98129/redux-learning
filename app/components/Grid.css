@@ -1,9 +1,8 @@
 .course-table-grid {
-  height: 100px;
   width: 13%;
   color: #fff;
   text-align: center;
-  font-size: 14px;
+  font-size: 1.4rem!important;
   cursor: pointer;
 }
 
@@ -15,13 +14,30 @@
   -webkit-box-orient: vertical;
 } */
 
-.course-table-grid-content .content-hint {
-  font-size: 10px;
+.course-table-grid-content-wrapper {
+  position: relative;
+  width: 100%;
+  border-radius: 4px;
 }
 
-@media screen and (max-width: 450px) {
+.course-table-grid-content {
+  width: 100%;
+  padding-top: 10%;
+  overflow: hidden;
+}
+
+.course-table-grid,
+.course-table-grid-content,
+.course-table-grid-content-wrapper {
+  height: 100px;
+}
+
+@media screen and (max-width:500px) {
   .course-table-grid {
-    font-size: 10px;
+    font-size: 1.0rem!important;
+  }
+  .course-table-grid-content {
+    padding-top: 4px;
   }
   /* .course-table-grid-content .content-upper {
     max-height: 70%;
@@ -33,26 +49,14 @@
     -webkit-box-orient: vertical;
   } */
   .course-table-grid-content .content-lower .content-classroom {
-    font-size: 9px;
+    font-size: 0.9rem;
   }
 }
 
-.course-table-grid-content-wrapper {
-  position: relative;
-  width: 100%;
-  height: 100px;
-  border-radius: 4px;
-}
-
-.course-table-grid-content {
-  height: 100px;
-  position: absolute;
-  width: 100%;
-  /* white-space: normal;
-  word-break: break-all; */
-  padding-top: 4px;
-  overflow: hidden;
-  /* display: flex;
-  flex-direction: column;
-  justify-content: space-between; */
+@media screen and (min-height: 750px) {
+  .course-table-grid,
+  .course-table-grid-content,
+  .course-table-grid-content-wrapper {
+    height: calc(100vh/7);
+  }
 }
