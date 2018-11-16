@@ -21,7 +21,7 @@ module.exports = merge(baseWebpackConfig, {
     }),
     new CleanWebpackPlugin(['../public'], {allowExternal: true}),
     new webpack.DefinePlugin({
-      host: "'http://localhost:7001'"
+      host: "'http://xbeta.club'"
     })
   ],
   optimization: {

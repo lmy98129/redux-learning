@@ -27,14 +27,14 @@ class CourseInfo extends Component {
   }
 
   onSelect = (opt) => {
-    const { history, forwardPush } = this.props;
+    const { history, forwardPush, routerHistory } = this.props;
     const { time, date } = this.state;
     this.setState({
       popVisible: false,
     })
     switch(opt.props.value) {
       case "Add":
-        forwardPush({ pathname: '/edit', editStatus: 'add', time, date });
+        forwardPush(routerHistory, { pathname: '/edit', editStatus: 'add', time, date });
         history.push('/edit')
         break;
     }
