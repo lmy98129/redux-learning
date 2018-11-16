@@ -1,0 +1,15 @@
+.time-selector-grid {
+  width: 25%;
+  color: #000;
+  text-align: center;
+  border: 1px solid rgb(219, 219, 219);
+  border-collapse: collapse;
+  font-size: 1.7rem;
+  line-height: 2.6rem;
+}
+
+.time-selector-grid.selected {
+  color: #fff;
+  background-color: #108ee9;
+  border: 1px solid #0e81d3;
+}

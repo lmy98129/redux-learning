@@ -1,25 +1,25 @@
 import { combineReducers } from 'redux';
 import qs from 'querystring';
-import scheduleReducer, {
-   scheduleAdder, 
-   scheduleDelete, 
-   scheduleUpdate, 
-   scheduleGetter,
-  } from './schedule';
+import courseTableReducer, {
+   courseTableAdder, 
+   courseTableDelete, 
+   courseTableUpdate, 
+   courseTableGetter,
+  } from './courseTable';
 import routerReducer, {
     forwardPush,
     backwardPop,
   } from './router';
 
 export default combineReducers({
-  scheduleReducer,
+  courseTableReducer,
   routerReducer
 })
 
 export const mapDispatchToProps = (dispatch) => {
   return {
     getSchedule: (isRefresh) => {
-      scheduleGetter(
+      courseTableGetter(
         // '/login',
         host + '/login', 
         // 'http://localhost:7001/login',
@@ -42,23 +42,23 @@ export const mapDispatchToProps = (dispatch) => {
         dispatch
       )
     },
-    addCourse: (schedule, time, date, newCourse) => scheduleAdder(schedule, time, date, newCourse, dispatch),
-    deleteCourse: (schedule, time, date, index) => scheduleDelete(schedule, time, date, index, dispatch),
-    updateCourse: (schedule, time, date, index, newValue) => scheduleUpdate(schedule, time, date, index, newValue, dispatch),
+    addCourse: (courseTable, time, date, newCourse) => courseTableAdder(courseTable, time, date, newCourse, dispatch),
+    deleteCourse: (courseTable, time, date, index) => courseTableDelete(courseTable, time, date, index, dispatch),
+    updateCourse: (courseTable, time, date, index, newValue) => courseTableUpdate(courseTable, time, date, index, newValue, dispatch),
     forwardPush: (history, current) => forwardPush(history, current, dispatch),
     backwardPop: (history) => backwardPop(history, dispatch),
-    // returnToSuccess: (schedule) => dispatch({ type:actionTypes.GET_VALUE_SUCCESS, schedule}),
+    // returnToSuccess: (courseTable) => dispatch({ type:actionTypes.GET_VALUE_SUCCESS, courseTable}),
   }
 }
 
 export const mapStateToProps = (state) => {
   let props = {
-    ...state.scheduleReducer,
+    ...state.courseTableReducer,
     ...state.routerReducer
   }
-  if (state.scheduleReducer.schedule !== {} &&
-    state.scheduleReducer.schedule !== undefined) {
-      props.schedule = state.scheduleReducer.schedule;
+  if (state.courseTableReducer.courseTable !== {} &&
+    state.courseTableReducer.courseTable !== undefined) {
+      props.courseTable = state.courseTableReducer.courseTable;
     }
   return props;
 }

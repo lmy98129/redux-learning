@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react'
-import Table from './Table'
+import Table from './CourseTable'
 import './Home.css'
 import { connect } from 'react-redux'
 import { mapDispatchToProps } from '../redux/modules/'

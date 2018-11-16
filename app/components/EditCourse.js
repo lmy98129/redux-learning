@@ -1,17 +1,27 @@
 import React, { Component, Fragment } from 'react'
 import NavBar from './NavBar'
 import { Redirect } from 'react-router-dom'
-import { WhiteSpace, InputItem, List, Toast } from 'antd-mobile';
+import { WhiteSpace, InputItem, List, Toast, Modal } from 'antd-mobile';
 import { createForm } from 'rc-form'
 import { mapDispatchToProps, mapStateToProps } from '../redux/modules/'
 import { connect } from 'react-redux'
+import TimeSelector from './TimeSelector'
 
-const inputTags = ['courseName', 'classroom', 'SKZCZFC', 'dateTime']
+const inputTags = ['courseName', 'classroom', 'SKZCZFC', 'dateTime'];
+const alert = Modal.alert;
+
+const showTimeSelector = () => {
+  alert("周数选择", <TimeSelector />, [
+    { text: "取消", onPress: () => console.log("cancel"), style: 'default' },
+    { text: "确定", onPress: () => console.log("OK") }
+  ])
+}
+
 
 class EditCourse extends Component {
   constructor(props) {
     super(props);
-    const { routerHistory, schedule } = this.props;
+    const { routerHistory, courseTable } = this.props;
     let time, date, editStatus, index, content, teacher;
     if (routerHistory.length != 0) {
       for (let item of routerHistory) {
@@ -26,7 +36,7 @@ class EditCourse extends Component {
       }
       switch(editStatus) {
         case "edit":
-          content = schedule[time][date][index]
+          content = courseTable[time][date][index]
           if (content.teacher) {
             teacher = content.teacher;
           } else {
@@ -46,13 +56,14 @@ class EditCourse extends Component {
       }
     }
     this.state = {
-      time, date, index, content, teacher, editStatus
+      time, date, index, content, teacher, editStatus, 
+      weektime: content ? content.SKZCZFC : ""
     }
   }
   render() {
-    const { history, form, updateCourse, addCourse, schedule } = this.props
+    const { history, form, updateCourse, addCourse, courseTable } = this.props
     const { getFieldProps, getFieldError, validateFields } = form
-    const { time, date, index, content, teacher, editStatus } = this.state;
+    const { time, date, index, content, teacher, editStatus, weektime } = this.state;
     if (!time || !date) {
       return <Redirect push to="/"/>
     }
@@ -69,10 +80,10 @@ class EditCourse extends Component {
                   delete fieldsValue.classroom;
                   switch(editStatus) {
                     case "edit":
-                      updateCourse(schedule, time, date, index, fieldsValue)
+                      updateCourse(courseTable, time, date, index, fieldsValue)
                       break;
                     case "add":
-                      addCourse(schedule, time, date, fieldsValue)
+                      addCourse(courseTable, time, date, fieldsValue)
                       break;
                   }
                   Toast.success("保存成功", 1);
@@ -129,6 +140,9 @@ class EditCourse extends Component {
               })}
               placeholder="请输入上课周数"
               clear
+              editable={false}
+              onClick={() => showTimeSelector()}
+              value={weektime}
             >
               周数
             </InputItem>

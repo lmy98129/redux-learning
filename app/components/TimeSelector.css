@@ -1,0 +1,9 @@
+.time-selector-wrapper {
+  width: 100%;
+}
+
+.time-selector {
+  width: 100%;
+  border: 1px solid rgb(219, 219, 219);
+  border-collapse: collapse;
+}

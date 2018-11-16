@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { mapDispatchToProps, mapStateToProps } from '../redux/modules/'
-import './Table.css'
-import Grid from './Grid'
+import { mapDispatchToProps, mapStateToProps } from '../redux/modules'
+import './CourseTable.css'
+import Grid from './CourseGrid'
 
-class Table extends Component {
+class CourseTable extends Component {
   constructor(props) {
     super(props);
     switch(this.props.value) {
@@ -24,7 +24,7 @@ class Table extends Component {
     return true
   }
   render() {
-    const { value, schedule, history } = this.props;
+    const { value, courseTable, history } = this.props;
     switch(value) {
       case "Loading":
       case "Failed":
@@ -48,9 +48,9 @@ class Table extends Component {
             </thead>
             <tbody>
               {
-                Object.keys(schedule).map((time) => {
+                Object.keys(courseTable).map((time) => {
                   return (
-                    <tr key={'ul_'+ time} className="course-table-line">
+                    <tr key={'tr_'+ time} className="course-table-line">
                       <th className="course-table-left-side">
                         {time}
                         <br/>
@@ -61,9 +61,9 @@ class Table extends Component {
                         {timeRange[time].end}
                       </th>
                       {
-                        Object.keys(schedule[time]).map((date) => {
+                        Object.keys(courseTable[time]).map((date) => {
                           return (
-                            <Grid key={'li_'+date} time={time} date={date} history={history}/>
+                            <Grid key={'th_'+date} time={time} date={date} history={history}/>
                           )
                         })
                       }
@@ -78,9 +78,9 @@ class Table extends Component {
   }
 }
 
-Table.propTypes = {
+CourseTable.propTypes = {
   value: PropTypes.string.isRequired,
-  schedule: PropTypes.object,
+  courseTable: PropTypes.object,
   getSchedule: PropTypes.func.isRequired,
 }
 
@@ -114,5 +114,5 @@ const timeRange = {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(Table);
+)(CourseTable);
 

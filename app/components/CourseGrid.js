@@ -1,26 +1,24 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import './Grid.css'
+import './CourseGrid.css'
 import { Modal } from 'antd-mobile'
 import { mapStateToProps, mapDispatchToProps } from '../redux/modules'
 import { connect } from 'react-redux'
 
 const operation = Modal.operation;
 
-const Grid = ({
-    schedule, 
+const CourseGrid = ({
+    courseTable, 
     routerHistory,
     forwardPush,
     time, 
     date,
     history
   }) => {
-    const content = schedule[time][date];
-    const currentHistory = history.location;
+    const content = courseTable[time][date];
     if (content.length === 0) {
       return (<td className="course-table-grid" onClick={() => operation([
         { text: '添加课程', onPress: () => {
-          // forwardPush(routerHistory, currentHistory);
           forwardPush(routerHistory, { pathname: '/edit', editStatus: 'add', time, date });
           history.push('/edit');
         } }
@@ -28,7 +26,6 @@ const Grid = ({
     } else {
       return(
         <td className="course-table-grid" onClick={() => {
-          // forwardPush(routerHistory, currentHistory);
           forwardPush(routerHistory, { pathname: '/info', time, date });
           history.push('/info');
         }}>
@@ -48,10 +45,10 @@ const Grid = ({
     }
   }
 
-Grid.propTypes = {
+  CourseGrid.propTypes = {
   time: PropTypes.string.isRequired,
   date: PropTypes.string.isRequired
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Grid);
+export default connect(mapStateToProps, mapDispatchToProps)(CourseGrid);
 
