@@ -11,21 +11,31 @@ const Item = Popover.Item;
 class CourseInfo extends Component {
   constructor(props) {
     super(props);
+    let time, date;
+    const { routerHistory } = this.props;
+    for (let item of routerHistory) {
+      if (item.pathname == "/info") {
+        time = item.time;
+        date = item.date;
+      }
+    }
     this.state = {
       popVisible: false,
+      time,
+      date,
     }
   }
 
   onSelect = (opt) => {
-    const history = this.props.history;
-    const { time, date } = history.location;
-    const backValue = history.location;
+    const { history, forwardPush } = this.props;
+    const { time, date } = this.state;
     this.setState({
       popVisible: false,
     })
     switch(opt.props.value) {
       case "Add":
-        history.push({ pathname: '/edit', editStatus: 'add', backValue, time, date })
+        forwardPush({ pathname: '/edit', editStatus: 'add', time, date });
+        history.push('/edit')
         break;
     }
   }
@@ -37,25 +47,13 @@ class CourseInfo extends Component {
   }
 
   render() {
-    let backValue = this.props.history.location;
-    let { time, date } = backValue;
-    const { forwardPush, routerHistory } = this.props;
-    if (!time || !date) {
-      for (let item of routerHistory) {
-        if (item.pathname == "/info") {
-          time = item.time;
-          date = item.date;
-          backValue = item;
-        }
-      }
-      if (!time || !date) return <Redirect push to="/"/>
-    }
-    const content = this.props.schedule[time][date];
-    // const backValue = this.props.history.location;
-    const history = this.props.history;
+    const { forwardPush, routerHistory, deleteCourse, history, schedule } = this.props;
+    const {time, date} = this.state;
+    if (!time || !date) return <Redirect push to="/"/>
+    const content = schedule[time][date];
     return (
       <Fragment>
-        <NavBar 
+        <NavBar
           history={history}
           rightContent={
             <Popover
@@ -96,15 +94,15 @@ class CourseInfo extends Component {
                           type="ghost" 
                           inline size="small" 
                           onClick={() => {
-                            forwardPush(routerHistory, backValue);
-                            history.push({ pathname: '/edit', editStatus: 'edit', backValue, index })
+                            forwardPush(routerHistory, { pathname: '/edit', editStatus: 'edit', time, date, index });
+                            history.push('/edit');
                           } } 
                           style={{marginRight: "5px"}}
                         >编辑</Button>
                         <Button
                           type="warning"
                           inline size="small"
-                          onClick={() => this.props.deleteCourse(this.props.schedule, time, date, index)}
+                          onClick={() => deleteCourse(schedule, time, date, index)}
                         >删除</Button>
                       </Fragment>
 

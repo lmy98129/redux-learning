@@ -11,59 +11,68 @@ const inputTags = ['courseName', 'classroom', 'SKZCZFC', 'dateTime']
 class EditCourse extends Component {
   constructor(props) {
     super(props);
+    const { routerHistory, schedule } = this.props;
+    let time, date, editStatus, index, content, teacher;
+    if (routerHistory.length != 0) {
+      for (let item of routerHistory) {
+        if (item.pathname == "/edit") {
+          time = item.time;
+          date = item.date;
+          editStatus = item.editStatus;
+          if (editStatus == "edit") {
+            index = item.index;
+          }
+        }
+      }
+      switch(editStatus) {
+        case "edit":
+          content = schedule[time][date][index]
+          if (content.teacher) {
+            teacher = content.teacher;
+          } else {
+            teacher = ""
+          }
+          break;
+        case "add":
+          content = {
+            courseName: "",
+            SKZCZFC: "",
+            "classroom.roomNickname": ""
+          }
+          teacher = ""
+          break;
+        default:
+          return;
+      }
+    }
+    this.state = {
+      time, date, index, content, teacher, editStatus
+    }
   }
   render() {
-    const history = this.props.history
-    const { backValue, editStatus } = history.location;
-    const { routerHistory } = this.props
-    const { getFieldProps, getFieldError, validateFields } = this.props.form
-    if (!backValue) {
+    const { history, form, updateCourse, addCourse, schedule } = this.props
+    const { getFieldProps, getFieldError, validateFields } = form
+    const { time, date, index, content, teacher, editStatus } = this.state;
+    if (!time || !date) {
       return <Redirect push to="/"/>
-    }
-    let teacher, content, time, date, index;
-    switch(editStatus) {
-      case "edit":
-        time = backValue.time;
-        date = backValue.date;
-        index = history.location.index;
-        content = this.props.schedule[time][date][index]
-        if (content.teacher) {
-          teacher = content.teacher;
-        } else {
-          teacher = ""
-        }
-        break;
-      case "add":
-        time = history.location.time;
-        date = history.location.date;
-        content = {
-          courseName: "",
-          SKZCZFC: "",
-          "classroom.roomNickname": ""
-        }
-        teacher = ""
-        break;
     }
     return (
       <Fragment>
         <NavBar 
           history={history} 
-          backValue={backValue} 
           rightContent={
             <div 
               onClick={() => validateFields({ force: true }, (error) => {
                 if (!error) {
-                  let fieldsValue = this.props.form.getFieldsValue();
+                  let fieldsValue = form.getFieldsValue();
                   fieldsValue["classroom.roomNickname"] = fieldsValue.classroom;
                   delete fieldsValue.classroom;
-                  // delete fieldsValue.teacher;
-                  console.log(fieldsValue);
                   switch(editStatus) {
                     case "edit":
-                      this.props.updateCourse(this.props.schedule, time, date, index, fieldsValue)
+                      updateCourse(schedule, time, date, index, fieldsValue)
                       break;
                     case "add":
-                      this.props.addCourse(this.props.schedule, time, date, fieldsValue)
+                      addCourse(schedule, time, date, fieldsValue)
                       break;
                   }
                   Toast.success("保存成功", 1);

@@ -2,19 +2,19 @@ import React, { Component, Fragment } from 'react'
 import { NavBar, Icon } from 'antd-mobile'
 import PropTypes from 'prop-types'
 import './NavBar.css'
+import { connect } from 'react-redux'
+import { mapDispatchToProps, mapStateToProps } from '../redux/modules/';
 
 class CustomedNavBar extends Component {
   constructor(props) {
     super(props);
   }
   handleClick = () => {
-    const { history, backValue } = this.props;
+    const { history, routerHistory, backwardPop } = this.props;
     if (!history) return;
-    if (!backValue) {
-      history.goBack();
-    } else {
-      history.push(backValue);
-    }
+    routerHistory.pop();
+    backwardPop(routerHistory);
+    history.goBack();
   }
   
   render() {
@@ -48,4 +48,4 @@ NavBar.propTypes = {
   backPath: PropTypes.string,
 }
 
-export default CustomedNavBar;
+export default connect(mapStateToProps, mapDispatchToProps)(CustomedNavBar);

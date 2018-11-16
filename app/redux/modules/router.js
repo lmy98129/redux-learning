@@ -15,6 +15,7 @@ export default (state = { routerValue: "", routerHistory: [] }, action) => {
       return {
         ...state,
         routerValue: "Backward",
+        routerHistory: action.history
       }
     default:
       return state;
@@ -26,6 +27,6 @@ export const forwardPush = (history, current, dispatch) => {
   dispatch({type: actionTypes.PAGE_FORWARD, history});
 }
 
-export const backwardPop = (history) => {
-  dispatchEvent({type: actionTypes.PAGE_BACKWARD, history});
+export const backwardPop = (history, dispatch) => {
+  dispatch({type: actionTypes.PAGE_BACKWARD, history});
 }

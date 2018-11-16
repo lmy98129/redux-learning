@@ -46,7 +46,7 @@ export const mapDispatchToProps = (dispatch) => {
     deleteCourse: (schedule, time, date, index) => scheduleDelete(schedule, time, date, index, dispatch),
     updateCourse: (schedule, time, date, index, newValue) => scheduleUpdate(schedule, time, date, index, newValue, dispatch),
     forwardPush: (history, current) => forwardPush(history, current, dispatch),
-    backwardPop: (history) => backwardPop(history),
+    backwardPop: (history) => backwardPop(history, dispatch),
     // returnToSuccess: (schedule) => dispatch({ type:actionTypes.GET_VALUE_SUCCESS, schedule}),
   }
 }

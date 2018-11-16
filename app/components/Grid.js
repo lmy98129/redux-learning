@@ -9,7 +9,6 @@ const operation = Modal.operation;
 
 const Grid = ({
     schedule, 
-    // addCourse, 
     routerHistory,
     forwardPush,
     time, 
@@ -17,19 +16,21 @@ const Grid = ({
     history
   }) => {
     const content = schedule[time][date];
-    const backValue = history.location;
+    const currentHistory = history.location;
     if (content.length === 0) {
       return (<td className="course-table-grid" onClick={() => operation([
         { text: '添加课程', onPress: () => {
-          forwardPush(routerHistory, backValue);
-          history.push({ pathname: '/edit', editStatus: 'add', backValue, time, date })
+          // forwardPush(routerHistory, currentHistory);
+          forwardPush(routerHistory, { pathname: '/edit', editStatus: 'add', time, date });
+          history.push('/edit');
         } }
       ])}></td>)
     } else {
       return(
         <td className="course-table-grid" onClick={() => {
-          forwardPush(routerHistory, backValue);
-          history.push({ pathname: '/info', time, date }) 
+          // forwardPush(routerHistory, currentHistory);
+          forwardPush(routerHistory, { pathname: '/info', time, date });
+          history.push('/info');
         }}>
           <div className="course-table-grid-content-wrapper"  style={{background:content[0].color}}>
             <div className="course-table-grid-content">
