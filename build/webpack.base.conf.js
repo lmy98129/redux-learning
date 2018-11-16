@@ -1,6 +1,6 @@
 const path = require('path');
 const APP_PATH = path.resolve(__dirname, '../app');
-const DIST_PATH = path.resolve(__dirname, '../dist');
+const DIST_PATH = path.resolve(__dirname, '../public');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {

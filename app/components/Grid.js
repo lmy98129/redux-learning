@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import './Grid.css'
 import { Modal } from 'antd-mobile'
-import { mapStateToProps, mapDispatchToProps } from '../redux/modules/schedule'
+import { mapStateToProps, mapDispatchToProps } from '../redux/modules'
 import { connect } from 'react-redux'
 
 const operation = Modal.operation;
@@ -18,18 +18,12 @@ const Grid = ({
     const backValue = history.location;
     if (content.length === 0) {
       return (<td className="course-table-grid" onClick={() => operation([
-        // { text: '添加课程', onPress: () => addCourse(schedule, time, date) },
         { text: '添加课程', onPress: () => history.push({ pathname: '/edit', editStatus: 'add', backValue, time, date }) }
       ])}></td>)
     } else {
       return(
         <td className="course-table-grid" onClick={() => 
-          // operation([
-          //   { text: '课程详情', onPress: () => 
               history.push({ pathname: '/info', time, date }) 
-          //   },
-          //   { text: '添加课程', onPress: () => addCourse(schedule, time, date) },
-          // ])
           }>
           <div className="course-table-grid-content-wrapper"  style={{background:content[0].color}}>
             <div className="course-table-grid-content">

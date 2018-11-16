@@ -3,7 +3,7 @@ import NavBar from './NavBar'
 import { Redirect } from 'react-router-dom'
 import { WhiteSpace, InputItem, List, Toast } from 'antd-mobile';
 import { createForm } from 'rc-form'
-import { mapDispatchToProps, mapStateToProps } from '../redux/modules/schedule'
+import { mapDispatchToProps, mapStateToProps } from '../redux/modules/'
 import { connect } from 'react-redux'
 
 const inputTags = ['courseName', 'classroom', 'SKZCZFC', 'dateTime']
@@ -65,7 +65,6 @@ class EditCourse extends Component {
                       this.props.addCourse(this.props.schedule, time, date, fieldsValue)
                       break;
                   }
-                  this.props.returnToSuccess(this.props.schedule);
                   Toast.success("保存成功", 1);
                 } else {
                   console.log(error);

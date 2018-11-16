@@ -11,7 +11,7 @@ module.exports = merge(baseWebpackConfig, {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: "public/index.html",
+      template: "template/index.html",
       inject: "body",
       minify: {
         removeComments: true,
@@ -19,9 +19,9 @@ module.exports = merge(baseWebpackConfig, {
         removeAttributeQuotes: true
       }
     }),
-    new CleanWebpackPlugin(['../dist'], {allowExternal: true}),
+    new CleanWebpackPlugin(['../public'], {allowExternal: true}),
     new webpack.DefinePlugin({
-      host: "'http://xbeta.club'"
+      host: "'http://localhost:7001'"
     })
   ],
   optimization: {

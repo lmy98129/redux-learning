@@ -2,7 +2,7 @@ import React, { Fragment } from 'react'
 import Table from './Table'
 import './Home.css'
 import { connect } from 'react-redux'
-import { mapDispatchToProps } from '../redux/modules/schedule'
+import { mapDispatchToProps } from '../redux/modules/'
 import NavBar from './NavBar'
 
 const Home = ({ getSchedule, history }) => {

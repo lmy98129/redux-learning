@@ -9,6 +9,7 @@ class CustomedNavBar extends Component {
   }
   handleClick = () => {
     const { history, backValue } = this.props;
+    if (!history) return;
     if (!backValue) {
       history.goBack();
     } else {
@@ -37,7 +38,7 @@ class CustomedNavBar extends Component {
           onLeftClick={this.handleClick}
           rightContent={rightContent}
         >{title}</NavBar>
-        <div className="navbar-holder" style={{height: "4rem"}}></div>
+        <div className="navbar-holder" style={{height: "4.2rem"}}></div>
       </Fragment>
     )
   }

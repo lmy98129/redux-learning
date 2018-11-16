@@ -4,7 +4,7 @@ import { Card, WhiteSpace, Button, Popover, Icon, WingBlank } from 'antd-mobile'
 import NavBar from './NavBar'
 import './CourseInfo.css'
 import { connect } from 'react-redux'
-import { mapDispatchToProps, mapStateToProps } from '../redux/modules/schedule';
+import { mapDispatchToProps, mapStateToProps } from '../redux/modules/';
 
 const Item = Popover.Item;
 
@@ -13,16 +13,6 @@ class CourseInfo extends Component {
     super(props);
     this.state = {
       popVisible: false,
-    }
-  }
-
-  componentDidUpdate() {
-    switch(this.props.value) {
-      case "Edited":
-        this.props.returnToSuccess(this.props.schedule);
-        break;
-      default:
-        break;
     }
   }
 
@@ -35,7 +25,6 @@ class CourseInfo extends Component {
     })
     switch(opt.props.value) {
       case "Add":
-        // this.props.addCourse(this.props.schedule, time, date);
         history.push({ pathname: '/edit', editStatus: 'add', backValue, time, date })
         break;
     }

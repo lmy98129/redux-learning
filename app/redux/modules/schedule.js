@@ -12,68 +12,28 @@ export default (state = { value: "Loading", schedule: {} }, action) => {
   switch (action.type) {
     case 'SCHEDULE/GET_VALUE_LOADING':
       return {
+        ...state,
         value: "Loading"
       }
     case 'SCHEDULE/GET_VALUE_SUCCESS':
       return {
+        ...state,
         value: "Success",
         schedule: action.schedule
       }
     case 'SCHEDULE/GET_VALUE_FAILED':
       return {
+        ...state,
         value: "Failed"
       }
     case 'SCHEDULE/EDIT_COURSE':
       return {
+        ...state,
         value: "Edited",
         schedule: action.schedule
       }
     default:
       return state
-  }
-}
-
-export const mapStateToProps = (state) => {
-  let props = {
-    value: state.scheduleReducer.value,
-  }
-  if (state.scheduleReducer.schedule !== {} &&
-    state.scheduleReducer.schedule !== undefined) {
-      props.schedule = state.scheduleReducer.schedule;
-    }
-  return props;
-}
-
-export const mapDispatchToProps = (dispatch) => {
-  return {
-    getSchedule: (isRefresh) => {
-      scheduleGetter(
-        // '/login',
-        host + '/login', 
-        // 'http://localhost:7001/login',
-        {
-          method: 'POST',
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-            "csrftoken": ""
-          },
-          body: qs.stringify({
-            idNo: '350721199801291815',
-            loginApi: '/StuLoginService/loginStudentByIdentity.json',
-            secrite: '291815',
-            stuNo: '41624140',
-          }),
-          credentials: 'include',
-          // mode: "cors"
-        },
-        isRefresh,
-        dispatch
-      )
-    },
-    addCourse: (schedule, time, date, newCourse) => scheduleAdder(schedule, time, date, newCourse, dispatch),
-    deleteCourse: (schedule, time, date, index) => scheduleDelete(schedule, time, date, index, dispatch),
-    updateCourse: (schedule, time, date, index, newValue) => scheduleUpdate(schedule, time, date, index, newValue, dispatch),
-    returnToSuccess: (schedule) => dispatch({ type:actionTypes.GET_VALUE_SUCCESS, schedule}),
   }
 }
 
@@ -101,7 +61,7 @@ const setColor = (schedule) => {
   }
 }
 
-const scheduleGetter = (url, init, isRefresh, dispatch) => {
+export const scheduleGetter = (url, init, isRefresh, dispatch) => {
   dispatch({ type: actionTypes.GET_VALUE_LOADING });
   let schedule = localStorage.getItem('schedule');
   if (schedule && !isRefresh) {
@@ -136,13 +96,7 @@ const scheduleGetter = (url, init, isRefresh, dispatch) => {
   })
 }
 
-const scheduleAdder = (schedule, time, date, newCourse, dispatch) => {
-  // schedule[String(newCourse.section)][String(newCourse.dayOfWeek)] = newCourse;
-  // let newCourse = {
-  //   SKZCZFC: "10-12周",
-  //   courseName: "测试课程",
-  //   "classroom.roomNickname": "测试地点"
-  // }
+export const scheduleAdder = (schedule, time, date, newCourse, dispatch) => {
   schedule[time][date].push(newCourse);
   setColor(schedule);
   console.log(schedule);
@@ -150,7 +104,7 @@ const scheduleAdder = (schedule, time, date, newCourse, dispatch) => {
   return dispatch({ type: actionTypes.EDIT_COURSE, schedule })
 }
 
-const scheduleDelete = (schedule, time, date, index, dispatch) => {
+export const scheduleDelete = (schedule, time, date, index, dispatch) => {
   schedule[time][date].splice(index, 1);
   setColor(schedule);
   console.log(schedule);
@@ -158,7 +112,7 @@ const scheduleDelete = (schedule, time, date, index, dispatch) => {
   return dispatch({ type: actionTypes.EDIT_COURSE, schedule })
 }
 
-const scheduleUpdate = (schedule, time, date, index, newValue, dispatch) => {
+export const scheduleUpdate = (schedule, time, date, index, newValue, dispatch) => {
   Object.assign(schedule[time][date][index], newValue);
   setColor(schedule);
   console.log(schedule);

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { mapDispatchToProps, mapStateToProps } from '../redux/modules/schedule'
+import { mapDispatchToProps, mapStateToProps } from '../redux/modules/'
 import './Table.css'
 import Grid from './Grid'
 
@@ -15,17 +15,7 @@ class Table extends Component {
     }
     this.props.getSchedule();
   }
-  componentDidUpdate() {
-    switch(this.props.value) {
-      case "Edited":
-        this.props.returnToSuccess(this.props.schedule);
-        break;
-      default:
-        break;
-    }
-  }
   shouldComponentUpdate(nextProps) {
-    // console.log(this.props, nextProps);
     switch(this.props.value) {
       case "Edited":
         if (nextProps.value === "Success")
