@@ -10,6 +10,8 @@ const operation = Modal.operation;
 const Grid = ({
     schedule, 
     // addCourse, 
+    routerHistory,
+    forwardPush,
     time, 
     date,
     history
@@ -18,13 +20,17 @@ const Grid = ({
     const backValue = history.location;
     if (content.length === 0) {
       return (<td className="course-table-grid" onClick={() => operation([
-        { text: '添加课程', onPress: () => history.push({ pathname: '/edit', editStatus: 'add', backValue, time, date }) }
+        { text: '添加课程', onPress: () => {
+          forwardPush(routerHistory, backValue);
+          history.push({ pathname: '/edit', editStatus: 'add', backValue, time, date })
+        } }
       ])}></td>)
     } else {
       return(
-        <td className="course-table-grid" onClick={() => 
-              history.push({ pathname: '/info', time, date }) 
-          }>
+        <td className="course-table-grid" onClick={() => {
+          forwardPush(routerHistory, backValue);
+          history.push({ pathname: '/info', time, date }) 
+        }}>
           <div className="course-table-grid-content-wrapper"  style={{background:content[0].color}}>
             <div className="course-table-grid-content">
               <div className="content-upper">{ content[0].courseName }<br/></div>

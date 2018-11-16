@@ -37,12 +37,21 @@ class CourseInfo extends Component {
   }
 
   render() {
-    const { time, date } = this.props.history.location;
+    let backValue = this.props.history.location;
+    let { time, date } = backValue;
+    const { forwardPush, routerHistory } = this.props;
     if (!time || !date) {
-      return <Redirect push to="/"/>
-    } 
+      for (let item of routerHistory) {
+        if (item.pathname == "/info") {
+          time = item.time;
+          date = item.date;
+          backValue = item;
+        }
+      }
+      if (!time || !date) return <Redirect push to="/"/>
+    }
     const content = this.props.schedule[time][date];
-    const backValue = this.props.history.location;
+    // const backValue = this.props.history.location;
     const history = this.props.history;
     return (
       <Fragment>
@@ -86,7 +95,10 @@ class CourseInfo extends Component {
                         <Button 
                           type="ghost" 
                           inline size="small" 
-                          onClick={() => history.push({ pathname: '/edit', editStatus: 'edit', backValue, index })} 
+                          onClick={() => {
+                            forwardPush(routerHistory, backValue);
+                            history.push({ pathname: '/edit', editStatus: 'edit', backValue, index })
+                          } } 
                           style={{marginRight: "5px"}}
                         >编辑</Button>
                         <Button

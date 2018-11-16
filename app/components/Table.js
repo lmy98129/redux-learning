@@ -8,10 +8,10 @@ import Grid from './Grid'
 class Table extends Component {
   constructor(props) {
     super(props);
-  }
-  componentDidMount() {
-    if (this.props.value === "Success") {
-      return;
+    switch(this.props.value) {
+      case "Success":
+      case "Edited":
+        return;
     }
     this.props.getSchedule();
   }

@@ -15,6 +15,7 @@ class EditCourse extends Component {
   render() {
     const history = this.props.history
     const { backValue, editStatus } = history.location;
+    const { routerHistory } = this.props
     const { getFieldProps, getFieldError, validateFields } = this.props.form
     if (!backValue) {
       return <Redirect push to="/"/>

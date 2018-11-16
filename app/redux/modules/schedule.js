@@ -1,6 +1,6 @@
 import qs from 'querystring'
 
-export const actionTypes = {
+const actionTypes = {
   GET_VALUE_LOADING: 'SCHEDULE/GET_VALUE_LOADING',
   GET_VALUE_SUCCESS: 'SCHEDULE/GET_VALUE_SUCCESS',
   GET_VALUE_FAILED: 'SCHEDULE/GET_VALUE_FAILED',

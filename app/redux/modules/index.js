@@ -4,9 +4,12 @@ import scheduleReducer, {
    scheduleAdder, 
    scheduleDelete, 
    scheduleUpdate, 
-   scheduleGetter 
+   scheduleGetter,
   } from './schedule';
-import routerReducer from './router';
+import routerReducer, {
+    forwardPush,
+    backwardPop,
+  } from './router';
 
 export default combineReducers({
   scheduleReducer,
@@ -42,7 +45,8 @@ export const mapDispatchToProps = (dispatch) => {
     addCourse: (schedule, time, date, newCourse) => scheduleAdder(schedule, time, date, newCourse, dispatch),
     deleteCourse: (schedule, time, date, index) => scheduleDelete(schedule, time, date, index, dispatch),
     updateCourse: (schedule, time, date, index, newValue) => scheduleUpdate(schedule, time, date, index, newValue, dispatch),
-    
+    forwardPush: (history, current) => forwardPush(history, current, dispatch),
+    backwardPop: (history) => backwardPop(history),
     // returnToSuccess: (schedule) => dispatch({ type:actionTypes.GET_VALUE_SUCCESS, schedule}),
   }
 }
