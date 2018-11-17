@@ -3,25 +3,27 @@ import NavBar from './NavBar'
 import { Redirect } from 'react-router-dom'
 import { WhiteSpace, InputItem, List, Toast, Modal } from 'antd-mobile';
 import { createForm } from 'rc-form'
-import { mapDispatchToProps, mapStateToProps } from '../redux/modules/'
+import { mapDispatchToProps, mapStateToProps } from '../redux/modules'
 import { connect } from 'react-redux'
 import TimeSelector from './TimeSelector'
+import store from '../redux/create'
+import { Provider } from 'react-redux'
 
 const inputTags = ['courseName', 'classroom', 'SKZCZFC', 'dateTime'];
 const alert = Modal.alert;
 
 const showTimeSelector = () => {
-  alert("周数选择", <TimeSelector />, [
+  alert("周数选择", <Provider store={store}><TimeSelector /></Provider>, [
     { text: "取消", onPress: () => console.log("cancel"), style: 'default' },
     { text: "确定", onPress: () => console.log("OK") }
   ])
 }
 
 
-class EditCourse extends Component {
+class CourseEdit extends Component {
   constructor(props) {
     super(props);
-    const { routerHistory, courseTable } = this.props;
+    const { routerHistory, courseTable, emptyTimeSel, initTimeSel } = this.props;
     let time, date, editStatus, index, content, teacher;
     if (routerHistory.length != 0) {
       for (let item of routerHistory) {
@@ -42,6 +44,7 @@ class EditCourse extends Component {
           } else {
             teacher = ""
           }
+          initTimeSel(content.weeks);
           break;
         case "add":
           content = {
@@ -50,6 +53,7 @@ class EditCourse extends Component {
             "classroom.roomNickname": ""
           }
           teacher = ""
+          emptyTimeSel();
           break;
         default:
           return;
@@ -181,4 +185,4 @@ export default
   connect(
     mapStateToProps, 
     mapDispatchToProps
-  )(createForm()(EditCourse));
+  )(createForm()(CourseEdit));

@@ -9,7 +9,7 @@ class TimeSelectorGrid extends Component {
         "time-selector-grid"+(selected ? " selected" : "")
       }>
         {
-          (parseInt(row)-1)*4 + parseInt(col)
+          (row)*4 + (col+1)
         }
       </td>
     )

@@ -10,10 +10,17 @@ import routerReducer, {
     forwardPush,
     backwardPop,
   } from './router';
+import timeSelReducer, {
+    initTimeSel,
+    editTimeSel,
+    filterTimeSel,
+    emptyTimeSel
+  } from './timeSelect'
 
 export default combineReducers({
   courseTableReducer,
-  routerReducer
+  routerReducer,
+  timeSelReducer
 })
 
 export const mapDispatchToProps = (dispatch) => {
@@ -47,6 +54,10 @@ export const mapDispatchToProps = (dispatch) => {
     updateCourse: (courseTable, time, date, index, newValue) => courseTableUpdate(courseTable, time, date, index, newValue, dispatch),
     forwardPush: (history, current) => forwardPush(history, current, dispatch),
     backwardPop: (history) => backwardPop(history, dispatch),
+    initTimeSel: (timeString) => initTimeSel(timeString, dispatch),
+    editTimeSel: (row, col, timeSel, status) => editTimeSel(row, col, timeSel, status, dispatch),
+    filterTimeSel: (mode, timeSel) => filterTimeSel(mode, timeSel, dispatch),
+    emptyTimeSel: () => emptyTimeSel(dispatch)
     // returnToSuccess: (courseTable) => dispatch({ type:actionTypes.GET_VALUE_SUCCESS, courseTable}),
   }
 }
@@ -54,11 +65,12 @@ export const mapDispatchToProps = (dispatch) => {
 export const mapStateToProps = (state) => {
   let props = {
     ...state.courseTableReducer,
-    ...state.routerReducer
+    ...state.routerReducer,
+    ...state.timeSelReducer
   }
-  if (state.courseTableReducer.courseTable !== {} &&
-    state.courseTableReducer.courseTable !== undefined) {
-      props.courseTable = state.courseTableReducer.courseTable;
-    }
+  // if (state.courseTableReducer.courseTable !== {} &&
+  //   state.courseTableReducer.courseTable !== undefined) {
+  //     props.courseTable = state.courseTableReducer.courseTable;
+  //   }
   return props;
 }
