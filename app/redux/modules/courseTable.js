@@ -8,28 +8,28 @@ const actionTypes = {
   EDIT_COURSE: 'COURSETABLE/EDIT_COURSE'
 }
 
-export default (state = { value: "Loading", courseTable: {} }, action) => {
+export default (state = { tableValue: "Loading", courseTable: {} }, action) => {
   switch (action.type) {
     case 'COURSETABLE/GET_VALUE_LOADING':
       return {
         ...state,
-        value: "Loading"
+        tableValue: "Loading"
       }
     case 'COURSETABLE/GET_VALUE_SUCCESS':
       return {
         ...state,
-        value: "Success",
+        tableValue: "Success",
         courseTable: action.courseTable
       }
     case 'COURSETABLE/GET_VALUE_FAILED':
       return {
         ...state,
-        value: "Failed"
+        tableValue: "Failed"
       }
     case 'COURSETABLE/EDIT_COURSE':
       return {
         ...state,
-        value: "Edited",
+        tableValue: "Edited",
         courseTable: action.courseTable
       }
     default:

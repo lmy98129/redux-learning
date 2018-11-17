@@ -11,7 +11,8 @@ const defaultState = {
     [0, 0, 0, 0],
     [0, 0, 0, 0],
     [0, 0, 0, 0],
-  ]
+  ],
+  week: "0000000000000000"
 }
 
 export default (state = defaultState, action) => {
@@ -21,12 +22,14 @@ export default (state = defaultState, action) => {
         ...state,
         timeSelValue: "Init",
         timeSel: action.timeSel,
+        week: action.week
       }
     case "TIMESEL/EDIT":
       return {
         ...state,
         timeSelValue: "Edit",
-        timeSel: action.timeSel
+        timeSel: action.timeSel,
+        week: action.week
       }
     case "TIMESEL/EMPTY":
       return defaultState;
@@ -35,8 +38,13 @@ export default (state = defaultState, action) => {
   }
 }
 
+const TwoDimArray2Str = (timeSel) => {
+  let OneDimArray = [].concat.apply([], timeSel);
+  return OneDimArray.join("")
+}
+
 export const initTimeSel = (timeString, dispatch) => {
-  let timeStrArr = [], timeSel = [];
+  let timeStrArr = [], timeSel = [], week;
   timeStrArr = timeString.split("");
   for (let i=0; i<4; i++) {
     timeSel.push([])
@@ -44,12 +52,15 @@ export const initTimeSel = (timeString, dispatch) => {
       timeSel[i].push(parseInt(timeStrArr.shift()));
     }
   }
-  return dispatch({type: actionTypes.INIT, timeSel});
+  week = TwoDimArray2Str(timeSel);
+  return dispatch({ type: actionTypes.INIT, timeSel, week });
 }
 
 export const editTimeSel = (row, col, timeSel, status, dispatch) => {
+  let week;
   timeSel[row][col] = status;
-  dispatch({type: actionTypes.EDIT, timeSel});
+  week = TwoDimArray2Str(timeSel);
+  return dispatch({ type: actionTypes.EDIT, timeSel, week });
 }
 
 const filter = (i, j, mode) => {
@@ -64,6 +75,7 @@ const filter = (i, j, mode) => {
 }
 
 export const filterTimeSel = (mode, timeSel, dispatch) => {
+  let week;
   for (let i=0; i<4; i++) {
     for (let j=0; j<4; j++) {
       if (filter(i, j, mode)) {
@@ -71,7 +83,8 @@ export const filterTimeSel = (mode, timeSel, dispatch) => {
       }
     }
   }
-  return dispatch({type: actionTypes.EDIT, timeSel});
+  week = TwoDimArray2Str(timeSel);
+  return dispatch({ type: actionTypes.EDIT, timeSel, week});
 }
 
 export const emptyTimeSel = (dispatch) => dispatch({type: actionTypes.EMPTY});

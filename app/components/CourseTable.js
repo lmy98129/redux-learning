@@ -8,7 +8,7 @@ import Grid from './CourseGrid'
 class CourseTable extends Component {
   constructor(props) {
     super(props);
-    switch(this.props.value) {
+    switch(this.props.tableValue) {
       case "Success":
       case "Edited":
         return;
@@ -16,20 +16,20 @@ class CourseTable extends Component {
     this.props.getSchedule();
   }
   shouldComponentUpdate(nextProps) {
-    switch(this.props.value) {
+    switch(this.props.tableValue) {
       case "Edited":
-        if (nextProps.value === "Success")
+        if (nextProps.tableValue === "Success")
           return false
         }
     return true
   }
   render() {
-    const { value, courseTable, history } = this.props;
-    switch(value) {
+    const { tableValue, courseTable, history } = this.props;
+    switch(tableValue) {
       case "Loading":
       case "Failed":
         return (  
-          <div className="loading-status">{value}</div>
+          <div className="loading-status">{tableValue}</div>
         )
       default:
         return (
@@ -79,7 +79,7 @@ class CourseTable extends Component {
 }
 
 CourseTable.propTypes = {
-  value: PropTypes.string.isRequired,
+  tableValue: PropTypes.string.isRequired,
   courseTable: PropTypes.object,
   getSchedule: PropTypes.func.isRequired,
 }

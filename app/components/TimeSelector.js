@@ -5,12 +5,9 @@ import { connect } from 'react-redux'
 import Grid from './TimeSelGrid'
 import './TimeSelector.css'
 
-// const staticArray = [1, 2, 3, 4];
-
 class TimeSelector extends Component {
   render() {
     const { timeSel } = this.props;
-    console.log(this.props);
     return (
       <div className="time-selector-wrapper">
         <table className="time-selector">
@@ -20,8 +17,8 @@ class TimeSelector extends Component {
                 return (
                   <tr key={'tr_' + rowIndex} >
                     {  
-                      row.map((col, colIndex) => {
-                        return <Grid key={'td_' + colIndex} row={rowIndex} col={colIndex} selected={(col==2)}/>
+                      row.map((itemValue, colIndex) => {
+                        return <Grid key={'td_' + colIndex} row={rowIndex} col={colIndex} selected={(itemValue==2)} itemValue={itemValue}/>
                       })
                     }
                   </tr>
