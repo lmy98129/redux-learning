@@ -2,17 +2,22 @@ import React, { Fragment } from 'react'
 import Table from './CourseTable'
 import './Home.css'
 import { connect } from 'react-redux'
-import { mapDispatchToProps } from '../redux/modules/'
+import { mapDispatchToProps, mapStateToProps } from '../redux/modules/'
 import NavBar from './NavBar'
 
-const Home = ({ getSchedule, history }) => {
+const Home = ({ getSchedule, history, curSchoolDate }) => {
+  if (curSchoolDate == undefined) {
+    curSchoolDate = "iCourse 课表";
+  } else {
+    curSchoolDate = "第" + curSchoolDate.schoolWeek + "周" 
+  }
   return (
     <Fragment>
       <NavBar
         icon={<div></div>}
         leftContent=" "
       >
-        iCourse 课表
+        {curSchoolDate}
       </NavBar>
       <div className="course-table-wrapper">
         <Table history={history} />
@@ -23,6 +28,6 @@ const Home = ({ getSchedule, history }) => {
   )
 }
 
-export default connect(null, mapDispatchToProps)(Home)
+export default connect(mapStateToProps, mapDispatchToProps)(Home)
 
 

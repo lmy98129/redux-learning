@@ -34,7 +34,7 @@
 
 @media screen and (max-width:500px) {
   .course-table-grid {
-    font-size: 1.3rem!important;
+    font-size: 1.35rem!important;
   }
   .course-table-grid-content {
     padding-top: 4px;
@@ -55,7 +55,7 @@
 
 @media screen and (max-width:400px) {
   .course-table-grid {
-    font-size: 1.0rem!important;
+    font-size: 1.25rem!important;
   }
 }
 

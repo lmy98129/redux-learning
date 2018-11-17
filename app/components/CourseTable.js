@@ -8,12 +8,13 @@ import Grid from './CourseGrid'
 class CourseTable extends Component {
   constructor(props) {
     super(props);
-    switch(this.props.tableValue) {
+    const { tableValue, getSchedule } = this.props;
+    switch(tableValue) {
       case "Success":
       case "Edited":
         return;
     }
-    this.props.getSchedule();
+    getSchedule();
   }
   render() {
     const { tableValue, courseTable, history } = this.props;

@@ -26,12 +26,13 @@ module.exports = {
               "es2015", { "modules": false }
             ],
             "stage-0",
-            "react"
+            "react",
           ],
           cacheDirectory: true,
           plugins: [
             ["import", { libraryName: "antd-mobile", style: "css"}],
-            ["import", { libraryName: "antd-mobile", libraryDirectory: "lib"}, "antd-mobile"]
+            ["import", { libraryName: "antd-mobile", libraryDirectory: "lib"}, "antd-mobile"],
+            "transform-runtime",
           ]
         }
       },

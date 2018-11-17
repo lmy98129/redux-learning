@@ -19,7 +19,8 @@ export default (state = { tableValue: "Loading", courseTable: {} }, action) => {
       return {
         ...state,
         tableValue: "Success",
-        courseTable: action.courseTable
+        courseTable: action.courseTable,
+        curSchoolDate: action.curSchoolDate
       }
     case 'COURSETABLE/GET_VALUE_FAILED':
       return {
@@ -60,19 +61,39 @@ const setColor = (courseTable) => {
   }
 }
 
-export const courseTableGetter = (url, init, isRefresh, dispatch) => {
+const todayValueGetter = (url, init, isRefresh) => {
+  if (!isRefresh) {
+    return new Promise.resolve("not refresh");
+  }
+  return new Promise(() => {
+    return fetch(url, init)
+      .then(res => res.json())
+      .then(res => {
+        return Promise.resolve(res.data.body.curSchoolDate)
+      })
+  })
+}
+
+export const courseTableGetter = async (url, init, isRefresh, dispatch) => {
   dispatch({ type: actionTypes.GET_VALUE_LOADING });
+  await fetch(url, {
+    method: 'GET'
+  })
+  init.headers.csrftoken = qs.parse(document.cookie).csrfToken;
+  let resp = await fetch(host+'/today', init)
+  resp = await resp.json();
+  let curSchoolDate = resp.data.body.curSchoolDate;
   let courseTable = localStorage.getItem('courseTable');
   if (courseTable && !isRefresh) {
     return dispatch({
       type: actionTypes.GET_VALUE_SUCCESS,
-      courseTable: JSON.parse(courseTable)
+      courseTable: JSON.parse(courseTable),
+      curSchoolDate,
     })
   } else
   return new Promise(() => {
     return fetch(url, {
       method: 'GET',
-      // mode: "cors",
     })
     .then(() => {
       init.headers.csrftoken = qs.parse(document.cookie).csrfToken;
@@ -86,7 +107,8 @@ export const courseTableGetter = (url, init, isRefresh, dispatch) => {
       localStorage.setItem('courseTable', JSON.stringify(courseTable));
       dispatch({
         type: actionTypes.GET_VALUE_SUCCESS,
-        courseTable
+        courseTable,
+        curSchoolDate
       })
     })
     .catch(err => {

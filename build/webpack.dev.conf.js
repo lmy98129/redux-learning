@@ -39,6 +39,13 @@ module.exports = merge(baseWebpackConfig, {
         pathRewrite: {
           '^/login': '/'
         }
+      },
+      '/today': {
+        target: 'http://xbeta.club/today',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/today': '/'
+        }
       }
     }
   }
