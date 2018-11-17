@@ -1,7 +1,8 @@
 const actionTypes = {
   INIT: "TIMESEL/INIT",
   EDIT: "TIMESEL/EDIT",
-  EMPTY: "TIMESEL/EMPTY"
+  EMPTY: "TIMESEL/EMPTY",
+  FILTERED: "TIMESEL/FILTERED"
 }
 
 const defaultState = {
@@ -12,7 +13,8 @@ const defaultState = {
     [0, 0, 0, 0],
     [0, 0, 0, 0],
   ],
-  week: "0000000000000000"
+  week: "0000000000000000",
+  filterType: 4
 }
 
 export default (state = defaultState, action) => {
@@ -29,10 +31,22 @@ export default (state = defaultState, action) => {
         ...state,
         timeSelValue: "Edit",
         timeSel: action.timeSel,
-        week: action.week
+        week: action.week,
+        filterType: defaultState.filterType
+      }
+    case "TIMESEL/FILTERED":
+      return {
+        ...state,
+        timeSelValue: "Filtered",
+        timeSel: action.timeSel,
+        week: action.week,
+        filterType: action.filterType
       }
     case "TIMESEL/EMPTY":
-      return defaultState;
+      return {
+        ...defaultState,
+        timeSel: action.timeSel,
+      };
     default: 
       return state;
   }
@@ -41,6 +55,17 @@ export default (state = defaultState, action) => {
 const TwoDimArray2Str = (timeSel) => {
   let OneDimArray = [].concat.apply([], timeSel);
   return OneDimArray.join("")
+}
+
+const filter = (i, j, mode) => {
+  switch(mode) {
+    case 'odd': 
+      return (((i*4+(j+1)) % 2) == 1);
+    case 'even': 
+      return (((i*4+(j+1)) % 2) == 0);
+    case 'all':
+      return true;
+  }
 }
 
 export const initTimeSel = (timeString, dispatch) => {
@@ -63,28 +88,28 @@ export const editTimeSel = (row, col, timeSel, status, dispatch) => {
   return dispatch({ type: actionTypes.EDIT, timeSel, week });
 }
 
-const filter = (i, j, mode) => {
-  switch(mode) {
-    case 'odd': 
-      return (i*4+(j+1) % 2 == 1);
-    case 'even': 
-      return (i*4+(j+1) % 2 == 0);
-    case 'all':
-      return true;
-  }
-}
-
 export const filterTimeSel = (mode, timeSel, dispatch) => {
   let week;
+  let filterType = ['odd', 'even', 'all'].indexOf(mode);
   for (let i=0; i<4; i++) {
     for (let j=0; j<4; j++) {
       if (filter(i, j, mode)) {
         timeSel[i][j] = 2;
+      } else {
+        timeSel[i][j] = 0
       }
     }
   }
   week = TwoDimArray2Str(timeSel);
-  return dispatch({ type: actionTypes.EDIT, timeSel, week});
+  return dispatch({ type: actionTypes.FILTERED, timeSel, week, filterType});
 }
 
-export const emptyTimeSel = (dispatch) => dispatch({type: actionTypes.EMPTY});
+export const emptyTimeSel = (dispatch) => {
+  let timeSel = [
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+  ]
+  return dispatch({ type: actionTypes.EMPTY, timeSel});
+};

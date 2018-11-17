@@ -5,9 +5,11 @@ import { connect } from 'react-redux'
 import Grid from './TimeSelGrid'
 import './TimeSelector.css'
 
+const filterMode = ['odd', 'even', 'all'];
+
 class TimeSelector extends Component {
   render() {
-    const { timeSel } = this.props;
+    const { timeSel, filterTimeSel, filterType } = this.props;
     return (
       <div className="time-selector-wrapper">
         <table className="time-selector">
@@ -28,7 +30,15 @@ class TimeSelector extends Component {
           </tbody>
         </table>
         <WhiteSpace size="lg"/>
-        <SegmentedControl selectedIndex={4} values={['单周', '双周', '全选']} style={{ height: "30px" }}/>
+        <SegmentedControl 
+          selectedIndex={filterType}
+          values={['单周', '双周', '全选']} 
+          style={{ height: "30px" }}
+          onChange={(e) => {
+            let index = e.nativeEvent.selectedSegmentIndex;
+            filterTimeSel(filterMode[index], timeSel);
+          }}
+        />
       </div>
     )
   }
