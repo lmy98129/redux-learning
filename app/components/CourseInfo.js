@@ -47,7 +47,7 @@ class CourseInfo extends Component {
   }
 
   render() {
-    const { forwardPush, routerHistory, deleteCourse, history, courseTable } = this.props;
+    const { forwardPush, routerHistory, deleteCourse, history, courseTable, forceToUpdate } = this.props;
     const {time, date} = this.state;
     if (!time || !date) return <Redirect push to="/"/>
     const content = courseTable[time][date];
@@ -102,7 +102,10 @@ class CourseInfo extends Component {
                         <Button
                           type="warning"
                           inline size="small"
-                          onClick={() => deleteCourse(courseTable, time, date, index)}
+                          onClick={() => {
+                            deleteCourse(courseTable, time, date, index)
+                            forceToUpdate(courseTable)
+                          }}
                         >删除</Button>
                       </Fragment>
 

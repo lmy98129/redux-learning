@@ -5,6 +5,7 @@ import courseTableReducer, {
    courseTableDelete, 
    courseTableUpdate, 
    courseTableGetter,
+   forceToUpdate,
   } from './courseTable';
 import routerReducer, {
     forwardPush,
@@ -52,6 +53,7 @@ export const mapDispatchToProps = (dispatch) => {
     addCourse: (courseTable, time, date, newCourse) => courseTableAdder(courseTable, time, date, newCourse, dispatch),
     deleteCourse: (courseTable, time, date, index) => courseTableDelete(courseTable, time, date, index, dispatch),
     updateCourse: (courseTable, time, date, index, newValue) => courseTableUpdate(courseTable, time, date, index, newValue, dispatch),
+    forceToUpdate: (courseTable) => forceToUpdate(courseTable, dispatch),
     forwardPush: (history, current) => forwardPush(history, current, dispatch),
     backwardPop: (history) => backwardPop(history, dispatch),
     initTimeSel: (timeString) => initTimeSel(timeString, dispatch),

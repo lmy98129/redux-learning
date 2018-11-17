@@ -15,14 +15,6 @@ class CourseTable extends Component {
     }
     this.props.getSchedule();
   }
-  shouldComponentUpdate(nextProps) {
-    switch(this.props.tableValue) {
-      case "Edited":
-        if (nextProps.tableValue === "Success")
-          return false
-        }
-    return true
-  }
   render() {
     const { tableValue, courseTable, history } = this.props;
     switch(tableValue) {

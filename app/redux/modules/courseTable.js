@@ -28,7 +28,6 @@ export default (state = { tableValue: "Loading", courseTable: {} }, action) => {
       }
     case 'COURSETABLE/EDIT_COURSE':
       return {
-        ...state,
         tableValue: "Edited",
         courseTable: action.courseTable
       }
@@ -118,4 +117,9 @@ export const courseTableUpdate = (courseTable, time, date, index, newValue, disp
   console.log(courseTable);
   localStorage.setItem('courseTable', JSON.stringify(courseTable));
   return dispatch({ type: actionTypes.EDIT_COURSE, courseTable })
+}
+
+export const forceToUpdate = (courseTable, dispatch) => {
+  dispatch({ type: actionTypes.GET_VALUE_SUCCESS, courseTable });
+  dispatch({ type: actionTypes.EDIT_COURSE, courseTable })
 }

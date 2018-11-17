@@ -12,13 +12,27 @@ import { Provider } from 'react-redux'
 const inputTags = ['courseName', 'classroom', 'SKZCZFC', 'dateTime'];
 const alert = Modal.alert;
 
-const showTimeSelector = () => {
-  alert("周数选择", <Provider store={store}><TimeSelector /></Provider>, [
-    { text: "取消", onPress: () => console.log("cancel"), style: 'default' },
-    { text: "确定", onPress: () => console.log("OK") }
-  ])
+const timeSelToWeekTime = (week) => {
+  let weekArray = week.split(""), result = "", start, end
+  for (let i=0; i<16; i++) {
+    if (start == undefined && weekArray[i] === "2") {
+      start = i+1;
+    }
+    if (weekArray[i] === "2" && (weekArray[i+1] === "0" || i+1>=16)) {
+      end = i+1;
+      if (start === end) {
+        result += end + ","
+      } else {
+        result += start + "-" + end + ","
+      }
+      start = undefined;
+    }
+  }
+  if (result === "") return result;
+  if (result.slice(-1) == ",") result = result.slice(0, -1);
+  result += "周"
+  return result;
 }
-
 
 class CourseEdit extends Component {
   constructor(props) {
@@ -64,9 +78,10 @@ class CourseEdit extends Component {
       weektime: content ? content.SKZCZFC : ""
     }
   }
+
   render() {
-    const { history, form, updateCourse, addCourse, courseTable } = this.props
-    const { getFieldProps, getFieldError, validateFields } = form
+    const { history, form, updateCourse, addCourse, courseTable, initTimeSel, emptyTimeSel} = this.props
+    const { getFieldProps, getFieldError, validateFields, getFieldsValue, setFieldsValue } = form
     const { time, date, index, content, teacher, editStatus, weektime } = this.state;
     if (!time || !date) {
       return <Redirect push to="/"/>
@@ -79,8 +94,9 @@ class CourseEdit extends Component {
             <div 
               onClick={() => validateFields({ force: true }, (error) => {
                 if (!error) {
-                  let fieldsValue = form.getFieldsValue();
+                  let fieldsValue = getFieldsValue();
                   fieldsValue["classroom.roomNickname"] = fieldsValue.classroom;
+                  fieldsValue.weeks = this.props.week;
                   delete fieldsValue.classroom;
                   switch(editStatus) {
                     case "edit":
@@ -93,7 +109,7 @@ class CourseEdit extends Component {
                   Toast.success("保存成功", 1);
                 } else {
                   console.log(error);
-                  Toast.fail("输入格式有误", 1);
+                  Toast.fail("格式错误", 1);
                 }
               })} 
               style={{marginRight: "15px"}}
@@ -145,8 +161,28 @@ class CourseEdit extends Component {
               placeholder="请输入上课周数"
               clear
               editable={false}
-              onClick={() => showTimeSelector()}
-              value={weektime}
+              onClick={() => alert("周数选择", <Provider store={store}><TimeSelector /></Provider>, [
+                { text: "取消", onPress: () => {
+                    switch(editStatus) {
+                      case "edit":
+                        initTimeSel(content.weeks);
+                        break;
+                      case "add":
+                        emptyTimeSel();
+                        break;
+                    }
+                  }, 
+                  style: 'default' 
+                },
+                { text: "确定", onPress: () => {
+                    // this.setState({ weektime: timeSelToWeekTime(this.props.week) })
+                    setFieldsValue({
+                      SKZCZFC: timeSelToWeekTime(this.props.week)
+                    })
+                  } 
+                }
+              ])}
+              // value={weektime}
             >
               周数
             </InputItem>
