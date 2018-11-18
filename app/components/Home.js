@@ -48,6 +48,7 @@ class Home extends Component {
 
     const topMenu = (
         <List>
+          <Item>{null}</Item>
           <Picker
             data={weeks}
             cols={1}
@@ -110,7 +111,7 @@ class Home extends Component {
         <Drawer
           style={{ 
             minHeight: document.documentElement.clientHeight, 
-            top: this.state.isDrawOpen ? "44px" : "", 
+            // top: this.state.isDrawOpen ? "44px" : "", 
             position: this.state.isDrawOpen ? "fixed" : ""
           }}
           contentStyle={{ paddingTop: 45 }}
