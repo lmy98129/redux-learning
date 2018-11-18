@@ -6,6 +6,8 @@ import courseTableReducer, {
    courseTableUpdate, 
    courseTableGetter,
    forceToUpdate,
+   changeWeek,
+   showAllCourse
   } from './courseTable';
 import routerReducer, {
     forwardPush,
@@ -53,14 +55,15 @@ export const mapDispatchToProps = (dispatch) => {
     addCourse: (courseTable, time, date, newCourse) => courseTableAdder(courseTable, time, date, newCourse, dispatch),
     deleteCourse: (courseTable, time, date, index) => courseTableDelete(courseTable, time, date, index, dispatch),
     updateCourse: (courseTable, time, date, index, newValue) => courseTableUpdate(courseTable, time, date, index, newValue, dispatch),
-    forceToUpdate: (courseTable) => forceToUpdate(courseTable, dispatch),
+    forceToUpdate: () => forceToUpdate(dispatch),
     forwardPush: (history, current) => forwardPush(history, current, dispatch),
     backwardPop: (history) => backwardPop(history, dispatch),
     initTimeSel: (timeString) => initTimeSel(timeString, dispatch),
     editTimeSel: (row, col, timeSel, status) => editTimeSel(row, col, timeSel, status, dispatch),
     filterTimeSel: (mode, timeSel) => filterTimeSel(mode, timeSel, dispatch),
-    emptyTimeSel: () => emptyTimeSel(dispatch)
-    // returnToSuccess: (courseTable) => dispatch({ type:actionTypes.GET_VALUE_SUCCESS, courseTable}),
+    emptyTimeSel: () => emptyTimeSel(dispatch),
+    changeWeek: (week) => changeWeek(week, dispatch),
+    showAllCourse: (showAll) => showAllCourse(showAll, dispatch)
   }
 }
 

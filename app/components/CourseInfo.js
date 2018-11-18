@@ -47,7 +47,7 @@ class CourseInfo extends Component {
   }
 
   render() {
-    const { forwardPush, routerHistory, deleteCourse, history, courseTable, forceToUpdate } = this.props;
+    const { forwardPush, routerHistory, deleteCourse, history, courseTable, forceToUpdate, schoolWeek, showAll } = this.props;
     const {time, date} = this.state;
     if (!time || !date) return <Redirect push to="/"/>
     const content = courseTable[time][date];
@@ -83,44 +83,51 @@ class CourseInfo extends Component {
         <WingBlank size="lg">
           {
             content.map((item, index) => {
-              return (
-              <Fragment key={index}>
-                <Card>
-                  <Card.Header 
-                    title={item.courseName}
-                    extra={
-                      <Fragment>
-                        <Button 
+              let weekArr = content[index].weeks.split("")
+              if (weekArr[schoolWeek-1] == "2" || showAll) {
+                return (
+                <Fragment key={index}>
+                  <Card>
+                    <Card.Header 
+                      title={item.courseName}
+                      extra={
+                        <Fragment>
+                          <Button 
+                            type="ghost" 
                           type="ghost" 
+                            type="ghost" 
+                            inline size="small" 
                           inline size="small" 
-                          onClick={() => {
-                            forwardPush(routerHistory, { pathname: '/edit', editStatus: 'edit', time, date, index });
-                            history.push('/edit');
-                          } } 
-                          style={{marginRight: "5px"}}
-                        >编辑</Button>
-                        <Button
-                          type="warning"
-                          inline size="small"
-                          onClick={() => {
-                            deleteCourse(courseTable, time, date, index)
-                            forceToUpdate(courseTable)
-                          }}
-                        >删除</Button>
-                      </Fragment>
-
-                    }
-                  />
-                  <Card.Body>
-                    <div className="item-wrap">教室 {item["classroom.roomNickname"]}</div>
-                    <div className="item-wrap">周数 {item.SKZCZFC}</div>
-                    <div className="item-wrap">节数 周{date} 第{time}节</div>
-                    <div className="item-wrap">教师 (暂不支持) </div>
-                  </Card.Body>
-                </Card>
-                <WhiteSpace size="md" />
-              </Fragment>
-              )
+                            inline size="small" 
+                            onClick={() => {
+                              forwardPush(routerHistory, { pathname: '/edit', editStatus: 'edit', time, date, index });
+                              history.push('/edit');
+                            } } 
+                            style={{marginRight: "5px"}}
+                          >编辑</Button>
+                          <Button
+                            type="warning"
+                            inline size="small"
+                            onClick={() => {
+                              deleteCourse(courseTable, time, date, index)
+                              forceToUpdate()
+                            }}
+                          >删除</Button>
+                        </Fragment>
+  
+                      }
+                    />
+                    <Card.Body>
+                      <div className="item-wrap">教室 {item["classroom.roomNickname"]}</div>
+                      <div className="item-wrap">周数 {item.SKZCZFC}</div>
+                      <div className="item-wrap">节数 周{date} 第{time}节</div>
+                      <div className="item-wrap">教师 (暂不支持) </div>
+                    </Card.Body>
+                  </Card>
+                  <WhiteSpace size="md" />
+                </Fragment>
+                )
+              }
             })
           }
         </WingBlank>

@@ -12,6 +12,7 @@ class CourseTable extends Component {
     switch(tableValue) {
       case "Success":
       case "Edited":
+      case "Change Week":
         return;
     }
     getSchedule();

@@ -26,7 +26,7 @@ class CustomedNavBar extends Component {
     if (!icon) {
       icon = <Icon type="left" />
     }
-    if (!leftContent) {
+    if (!leftContent && icon.props.type == "left") {
       leftContent = "返回"
     }
     return (
@@ -38,7 +38,7 @@ class CustomedNavBar extends Component {
           onLeftClick={this.handleClick}
           rightContent={rightContent}
         >{title}</NavBar>
-        <div className="navbar-holder" style={{height: "4.2rem"}}></div>
+        <div className="navbar-holder" style={{height: "48px"}}></div>
       </Fragment>
     )
   }

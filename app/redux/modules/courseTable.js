@@ -5,10 +5,13 @@ const actionTypes = {
   GET_VALUE_SUCCESS: 'COURSETABLE/GET_VALUE_SUCCESS',
   GET_VALUE_FAILED: 'COURSETABLE/GET_VALUE_FAILED',
   ADD_COURSE: 'COURSETABLE/ADD_COURSE',
-  EDIT_COURSE: 'COURSETABLE/EDIT_COURSE'
+  EDIT_COURSE: 'COURSETABLE/EDIT_COURSE',
+  CHANGE_WEEK: 'COURSETABLE/CHANGE_WEEK',
+  UPDATE: 'COURSETABLE/UPDATE',
+  SHOW_COURSE: 'COURSETABLE/SHOW_COURSE',
 }
 
-export default (state = { tableValue: "Loading", courseTable: {} }, action) => {
+export default (state = { tableValue: "Loading", courseTable: {}, showAll: false }, action) => {
   switch (action.type) {
     case 'COURSETABLE/GET_VALUE_LOADING':
       return {
@@ -20,7 +23,8 @@ export default (state = { tableValue: "Loading", courseTable: {} }, action) => {
         ...state,
         tableValue: "Success",
         courseTable: action.courseTable,
-        curSchoolDate: action.curSchoolDate
+        curSchoolDate: action.curSchoolDate,
+        schoolWeek: action.schoolWeek,
       }
     case 'COURSETABLE/GET_VALUE_FAILED':
       return {
@@ -29,8 +33,26 @@ export default (state = { tableValue: "Loading", courseTable: {} }, action) => {
       }
     case 'COURSETABLE/EDIT_COURSE':
       return {
+        ...state,
         tableValue: "Edited",
         courseTable: action.courseTable
+      }
+    case 'COURSETABLE/UPDATE':
+      return {
+        ...state,
+        tableValue: "Success"
+      }
+    case 'COURSETABLE/CHANGE_WEEK':
+      return {
+        ...state,
+        tableValue: "Change Week",
+        schoolWeek: action.week,
+      }
+    case 'COURSETABLE/SHOW_COURSE':
+      return {
+        ...state,
+        tableValue: "Success",
+        showAll: action.showAll
       }
     default:
       return state
@@ -61,60 +83,50 @@ const setColor = (courseTable) => {
   }
 }
 
-const todayValueGetter = (url, init, isRefresh) => {
-  if (!isRefresh) {
-    return new Promise.resolve("not refresh");
-  }
-  return new Promise(() => {
-    return fetch(url, init)
-      .then(res => res.json())
-      .then(res => {
-        return Promise.resolve(res.data.body.curSchoolDate)
-      })
-  })
-}
-
 export const courseTableGetter = async (url, init, isRefresh, dispatch) => {
   dispatch({ type: actionTypes.GET_VALUE_LOADING });
-  await fetch(url, {
-    method: 'GET'
-  })
-  init.headers.csrftoken = qs.parse(document.cookie).csrfToken;
-  let resp = await fetch(host+'/today', init)
-  resp = await resp.json();
-  let curSchoolDate = resp.data.body.curSchoolDate;
+  let curSchoolDate, schoolWeek;
+  try {
+    await fetch(url, { method: 'GET' })
+    init.headers.csrftoken = qs.parse(document.cookie).csrfToken;
+    let resp = await fetch(host +'/today', init)
+    resp = await resp.json();
+    curSchoolDate = resp.data.body.curSchoolDate;
+    schoolWeek = curSchoolDate.schoolWeek;
+  } catch (error) {
+    dispatch({type: actionTypes.GET_VALUE_FAILED})
+    return;
+  }
+  
   let courseTable = localStorage.getItem('courseTable');
   if (courseTable && !isRefresh) {
     return dispatch({
       type: actionTypes.GET_VALUE_SUCCESS,
       courseTable: JSON.parse(courseTable),
       curSchoolDate,
+      schoolWeek
     })
-  } else
-  return new Promise(() => {
-    return fetch(url, {
-      method: 'GET',
-    })
-    .then(() => {
+  } else {
+    try {
+      await fetch(url, { method: 'GET' })
       init.headers.csrftoken = qs.parse(document.cookie).csrfToken;
-      return fetch(url, init);
-    })
-    .then(res => res.json())
-    .then(res => {
-      courseTable = res.data.body.map;
+      let resp = await fetch(url, init);
+      resp = await resp.json();
+      courseTable = resp.data.body.map;
       setColor(courseTable);
       console.log(courseTable);
       localStorage.setItem('courseTable', JSON.stringify(courseTable));
       dispatch({
         type: actionTypes.GET_VALUE_SUCCESS,
         courseTable,
-        curSchoolDate
+        curSchoolDate,
+        schoolWeek
       })
-    })
-    .catch(err => {
+    } catch (error) {
       dispatch({type: actionTypes.GET_VALUE_FAILED})
-    })
-  })
+      return;
+    }
+  }
 }
 
 export const courseTableAdder = (courseTable, time, date, newCourse, dispatch) => {
@@ -141,7 +153,14 @@ export const courseTableUpdate = (courseTable, time, date, index, newValue, disp
   return dispatch({ type: actionTypes.EDIT_COURSE, courseTable })
 }
 
-export const forceToUpdate = (courseTable, dispatch) => {
-  dispatch({ type: actionTypes.GET_VALUE_SUCCESS, courseTable });
-  dispatch({ type: actionTypes.EDIT_COURSE, courseTable })
+export const forceToUpdate = (dispatch) => {
+  dispatch({ type: actionTypes.UPDATE });
+}
+
+export const changeWeek = (week, dispatch) => {
+  dispatch({ type: actionTypes.CHANGE_WEEK, week })
+}
+
+export const showAllCourse = (showAll, dispatch) => {
+  dispatch({ type: actionTypes.SHOW_COURSE, showAll })
 }
