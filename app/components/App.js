@@ -2,7 +2,7 @@ import React from 'react'
 import Home from './Home'
 import CourseInfo from './CourseInfo'
 import CourseEdit from './CourseEdit'
-import { HashRouter, Route, Switch } from 'react-router-dom'
+import { HashRouter, Route, Switch, Redirect } from 'react-router-dom'
 
 const App = () => {
   return (

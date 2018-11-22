@@ -1,7 +1,8 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { mapDispatchToProps, mapStateToProps } from '../redux/modules/'
 import { Icon, Drawer, List, Picker, Modal, Switch } from 'antd-mobile'
+import MainLayout from './MainLayout'
 import NavBar from './NavBar'
 import Table from './CourseTable'
 import './Home.css'
@@ -92,7 +93,7 @@ class Home extends Component {
         </List>
       )
     return (
-      <Fragment>
+      <MainLayout history={history}>
         <NavBar
           icon={<div></div>}
           rightContent={
@@ -129,7 +130,7 @@ class Home extends Component {
           <button onClick={() => getSchedule(true) } className="load-btn">刷新课表</button> */}
         </div>
         </Drawer>
-      </Fragment>
+      </MainLayout>
     )
   }
 }
