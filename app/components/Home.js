@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { mapDispatchToProps, mapStateToProps } from '../redux/modules/'
 import { Icon, Drawer, List, Picker, Modal, Switch } from 'antd-mobile'
-import MainLayout from './MainLayout'
+import TabBar from './TabBar'
 import NavBar from './NavBar'
 import Table from './CourseTable'
 import './Home.css'
@@ -93,7 +93,7 @@ class Home extends Component {
         </List>
       )
     return (
-      <MainLayout history={history}>
+      <TabBar history={history}>
         <NavBar
           icon={<div></div>}
           rightContent={
@@ -122,15 +122,15 @@ class Home extends Component {
           onOpenChange={this.onDrawOpenChange}
           position="top"
         >
-        <div className="home-wrapper">
-          <div className="course-table-wrapper">
-            <Table history={history} />
+          <div className="home-wrapper">
+            <div className="course-table-wrapper">
+              <Table history={history} />
+            </div>
           </div>
-          {/* <div className="button-holder"></div>
-          <button onClick={() => getSchedule(true) } className="load-btn">刷新课表</button> */}
-        </div>
+          <div className="bottom-holder"></div>
         </Drawer>
-      </MainLayout>
+
+      </TabBar>
     )
   }
 }

@@ -1,0 +1,22 @@
+@import '//at.alicdn.com/t/font_931925_jmrjp6p0q3.css';
+
+.iconfont.icon-yonghu.avatar {
+  font-size: 3.8rem;
+  color: #949494;
+  text-align: center;
+  line-height: 6.5rem;
+}
+
+.avatar-wrapper {
+  width: 80px;
+  height: 80px;
+  border-radius: 45px;
+  background: #eee;
+  margin: 20px auto;
+}
+
+@media screen and (max-height: 570px) {
+  .bottom-holder {
+    height: 50px;
+  }
+}

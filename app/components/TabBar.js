@@ -1,14 +1,13 @@
 import React from 'react';
-import './MainLayout.css';
+import './TabBar.css';
 import { TabBar } from 'antd-mobile';
 
 
-const MainLayout = ({ children, history }) => {
+const CustomedTabBar = ({ children, history }) => {
   const pathname = history.location.pathname;
 
   return (
     <div style={{ position: 'fixed', height: '100%', width: '100%', top: 0 }}>
-
       <TabBar
         unselectedTintColor='#949494'
         tintColor='#33A3F4'
@@ -25,6 +24,7 @@ const MainLayout = ({ children, history }) => {
           }}
         >
           {pathname === '/' ? children : null}
+
         </TabBar.Item>
         <TabBar.Item
           title='我的'
@@ -37,10 +37,12 @@ const MainLayout = ({ children, history }) => {
           }}
         >
           {pathname === '/user' ? children : null}
+
         </TabBar.Item>
+
       </TabBar>
     </div>
   )
 }
 
-export default MainLayout;
+export default CustomedTabBar;
