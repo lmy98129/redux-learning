@@ -163,9 +163,6 @@ class CourseEdit extends Component {
               editable={false}
               onClick={() => alert("周数选择", <Provider store={store}><TimeSelector /></Provider>, [
                 { text: "取消", onPress: () => {
-                    // setFieldsValue({
-                    //   SKZCZFC: timeSelToWeekTime(this.props.week)
-                    // })
                     cancelTimeSel();
                   }, 
                   style: 'default' 
@@ -178,7 +175,6 @@ class CourseEdit extends Component {
                   } 
                 }
               ])}
-              // value={weektime}
             >
               周数
             </InputItem>

@@ -34,16 +34,20 @@ class Home extends Component {
   }
 
   onPickerValueChange = value => {
-    console.log(value[0]);
     const { changeWeek } = this.props;
     changeWeek(value[0]);
   }
 
   render() {
-    const { getSchedule, history, showAll, showAllCourse } = this.props;
+    const { getSchedule, history, showAll, showAllCourse, idNo, secrite, stuNo, userStatus } = this.props;
     let { schoolWeek } = this.props;
     const weeks = setWeeks();
-    let title = showAll ? "全部课程" : ((schoolWeek) ? ("第" + schoolWeek + "周") : "iCourse 课表")
+    let title;
+    if (userStatus === "Logged") {
+      title = showAll ? "全部课程" : ((schoolWeek) ? ("第" + schoolWeek + "周") : "iCourse 课表")
+    } else {
+      title = "iCourse 课表"
+    }
     let pickerValue = [];
     pickerValue.push(schoolWeek);
 
@@ -73,7 +77,8 @@ class Home extends Component {
               alert('导入课表', '将从教务系统导入课表，之前在课表上所做的编辑将丢失', [
                 { text:'取消', onPress: () => {}, style: "default" },
                 { text:'确定', onPress: () => {
-                  getSchedule(true)
+                  let userInfo = { idNo, secrite, stuNo };
+                  getSchedule(userInfo);
                   this.setState({ isDrawOpen: false })
                 }}
               ])
@@ -97,6 +102,7 @@ class Home extends Component {
         <NavBar
           icon={<div></div>}
           rightContent={
+            userStatus === "Logged" ?
             <div style={{
               height: '100%',
               padding: '0 15px',
@@ -104,7 +110,7 @@ class Home extends Component {
               alignItems: 'center',
             }} onClick={this.onDrawOpenChange}>
               <Icon type="ellipsis" />
-            </div>
+            </div> : <div></div>
           }
         >
           {title}

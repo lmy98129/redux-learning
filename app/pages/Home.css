@@ -47,8 +47,18 @@ button {
   }
 }
 
-@media screen and (max-height: 570px) {
+@media screen and (max-height: 700px) {
   .bottom-holder {
-    height: 50px;
+    height: 100px;
   }
+}
+
+@media screen and (max-height: 600px) {
+  .bottom-holder {
+    height: 80px;
+  }
+}
+
+.am-tab-bar::-webkit-scrollbar {
+  display: none;
 }

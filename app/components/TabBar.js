@@ -12,6 +12,8 @@ const CustomedTabBar = ({ children, history }) => {
         unselectedTintColor='#949494'
         tintColor='#33A3F4'
         barTintColor='white'
+        tabBarPosition="bottom"
+        prerenderingSiblingsNumber={0}
       >
         <TabBar.Item 
           title='课表'
@@ -20,7 +22,7 @@ const CustomedTabBar = ({ children, history }) => {
           selectedIcon={<div className="iconfont icon-school-kb-web selected"></div>}
           selected={pathname === '/'}
           onPress={() => {
-            history.push('/')
+            if (pathname !== '/') history.push('/')
           }}
         >
           {pathname === '/' ? children : null}
@@ -33,7 +35,7 @@ const CustomedTabBar = ({ children, history }) => {
           selectedIcon={<div className="iconfont icon-yonghu selected"></div>}
           selected={pathname === '/user'}
           onPress={() => {
-            history.push('/user')
+            if (pathname !== '/user') history.push('/user')
           }}
         >
           {pathname === '/user' ? children : null}

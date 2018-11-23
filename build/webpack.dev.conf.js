@@ -33,6 +33,13 @@ module.exports = merge(baseWebpackConfig, {
     noInfo: true,
     open: true,
     proxy: {
+      '/table': {
+        target: 'http://xbeta.club/table',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/table': '/'
+        }
+      },
       '/login': {
         target: 'http://xbeta.club/login',
         changeOrigin: true,

@@ -21,39 +21,31 @@ import timeSelReducer, {
     saveTimeSel,
     cancelTimeSel,
   } from './timeSelect'
+import userReducer, {
+    checkLogin,
+    commitLogin,
+    quitLogin
+  } from './user'
 
 export default combineReducers({
   courseTableReducer,
   routerReducer,
-  timeSelReducer
+  timeSelReducer,
+  userReducer
 })
+
+export const mapStateToProps = (state) => {
+  return {
+    ...state.courseTableReducer,
+    ...state.routerReducer,
+    ...state.timeSelReducer,
+    ...state.userReducer,
+  }
+}
 
 export const mapDispatchToProps = (dispatch) => {
   return {
-    getSchedule: (isRefresh) => {
-      courseTableGetter(
-        // '/login',
-        host + '/login', 
-        // 'http://localhost:7001/login',
-        {
-          method: 'POST',
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-            "csrftoken": ""
-          },
-          body: qs.stringify({
-            idNo: '350721199801291815',
-            loginApi: '/StuLoginService/loginStudentByIdentity.json',
-            secrite: '291815',
-            stuNo: '41624140',
-          }),
-          credentials: 'include',
-          // mode: "cors"
-        },
-        isRefresh,
-        dispatch
-      )
-    },
+    getSchedule: (userInfo, isRefresh) => courseTableGetter(userInfo, isRefresh, dispatch),
     addCourse: (courseTable, time, date, newCourse) => courseTableAdder(courseTable, time, date, newCourse, dispatch),
     deleteCourse: (courseTable, time, date, index) => courseTableDelete(courseTable, time, date, index, dispatch),
     updateCourse: (courseTable, time, date, index, newValue) => courseTableUpdate(courseTable, time, date, index, newValue, dispatch),
@@ -67,19 +59,9 @@ export const mapDispatchToProps = (dispatch) => {
     changeWeek: (week) => changeWeek(week, dispatch),
     showAllCourse: (showAll) => showAllCourse(showAll, dispatch),
     saveTimeSel: (editingWeek) => saveTimeSel(editingWeek, dispatch),
-    cancelTimeSel: () => cancelTimeSel(dispatch)
+    cancelTimeSel: () => cancelTimeSel(dispatch),
+    checkLogin: () => checkLogin(dispatch),
+    commitLogin: (userInfo) => commitLogin(userInfo, dispatch),
+    quitLogin: () => quitLogin(dispatch),
   }
-}
-
-export const mapStateToProps = (state) => {
-  let props = {
-    ...state.courseTableReducer,
-    ...state.routerReducer,
-    ...state.timeSelReducer
-  }
-  // if (state.courseTableReducer.courseTable !== {} &&
-  //   state.courseTableReducer.courseTable !== undefined) {
-  //     props.courseTable = state.courseTableReducer.courseTable;
-  //   }
-  return props;
 }

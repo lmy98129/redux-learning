@@ -4,7 +4,7 @@
   font-size: 3.8rem;
   color: #949494;
   text-align: center;
-  line-height: 6.5rem;
+  line-height: 200%;
 }
 
 .avatar-wrapper {
@@ -15,8 +15,7 @@
   margin: 20px auto;
 }
 
-@media screen and (max-height: 570px) {
-  .bottom-holder {
-    height: 50px;
-  }
+.login-button {
+  text-align: center;
+  font-size: 1.8rem;
 }

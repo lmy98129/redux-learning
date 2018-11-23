@@ -83,11 +83,23 @@ const setColor = (courseTable) => {
   }
 }
 
-export const courseTableGetter = async (url, init, isRefresh, dispatch) => {
+export const courseTableGetter = async (userInfo, isRefresh, dispatch) => {
   dispatch({ type: actionTypes.GET_VALUE_LOADING });
   let curSchoolDate, schoolWeek;
+  let init = {
+    method: 'POST',
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+      "csrftoken": ""
+    },
+    body: qs.stringify({
+      ...userInfo,
+      loginApi: '/StuLoginService/loginStudentByIdentity.json'
+    }),
+    credentials: 'include',
+  };
   try {
-    await fetch(url, { method: 'GET' })
+    await fetch(host + '/login', { method: 'GET' })
     init.headers.csrftoken = qs.parse(document.cookie).csrfToken;
     let resp = await fetch(host +'/today', init)
     resp = await resp.json();
@@ -108,9 +120,9 @@ export const courseTableGetter = async (url, init, isRefresh, dispatch) => {
     })
   } else {
     try {
-      await fetch(url, { method: 'GET' })
+      await fetch(host + '/login', { method: 'GET' })
       init.headers.csrftoken = qs.parse(document.cookie).csrfToken;
-      let resp = await fetch(url, init);
+      let resp = await fetch(host + '/table', init);
       resp = await resp.json();
       courseTable = resp.data.body.map;
       setColor(courseTable);

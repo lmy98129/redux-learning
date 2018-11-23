@@ -2,28 +2,99 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { mapDispatchToProps, mapStateToProps } from '../redux/modules'
+import { ActivityIndicator, Toast, Button } from 'antd-mobile'
 import './CourseTable.css'
 import Grid from './CourseGrid'
 
 class CourseTable extends Component {
   constructor(props) {
     super(props);
-    const { tableValue, getSchedule } = this.props;
-    switch(tableValue) {
-      case "Success":
-      case "Edited":
-      case "Change Week":
-        return;
+    const { tableValue, getSchedule, checkLogin, userStatus, idNo, secrite, stuNo } = this.props;
+    switch(userStatus) {
+      case "Logged":
+        switch(tableValue) {
+          case "Success":
+          case "Edited":
+          case "Change Week":
+            break;
+          default:
+            let userInfo = { idNo, secrite, stuNo };
+            getSchedule(userInfo);
+            break;
+        }
+        break;
+      default:
+        checkLogin();
+        break;
     }
-    getSchedule();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { tableValue, getSchedule, userStatus, idNo, secrite, stuNo } = nextProps;
+    switch(userStatus) {
+      case "Logged":
+        switch(tableValue) {
+          case "Success":
+          case "Edited":
+          case "Change Week":
+            break;
+          default:
+            let userInfo = { idNo, secrite, stuNo };
+            getSchedule(userInfo);
+            break;
+        }
+        break;
+    }
   }
   render() {
-    const { tableValue, courseTable, history } = this.props;
+    const { tableValue, courseTable, history, userStatus } = this.props;
+    switch(userStatus) {
+      case "Unlogin":
+        return (
+          <div className="loading-status">
+            欢迎使用 iCourse课表<br/><br/>
+            <Button 
+              type="ghost" 
+              inline 
+              style={{margin: "0 auto"}}
+              onClick={() => history.push('/login')}
+            >
+              点我登录
+            </Button>
+          </div>
+        )
+      case "FAILED":
+        Toast.fail("登录失败", 3);
+        return (
+          <div className="loading-status">
+            登录失败<br/><br/>
+            <Button 
+              size="small" 
+              style={{margin: "0 auto"}}
+              onClick={() => history.push('/login')}
+            >
+              点我重新登录
+            </Button>
+          </div>
+        )
+    }
     switch(tableValue) {
       case "Loading":
-      case "Failed":
         return (  
-          <div className="loading-status">{tableValue}</div>
+          <div className="loading-status">
+            <ActivityIndicator 
+              toast
+              text="加载中"
+              animating
+            />
+          </div>
+        )
+      case "Failed":
+        Toast.fail("加载失败", 3);
+        return (
+          <div className="loading-status">
+            数据加载失败<br/><br/>请检查您的网络
+          </div>
         )
       default:
         return (
