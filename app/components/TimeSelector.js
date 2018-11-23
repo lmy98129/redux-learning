@@ -9,13 +9,29 @@ const filterMode = ['odd', 'even', 'all'];
 
 class TimeSelector extends Component {
   render() {
-    const { timeSel, filterTimeSel, filterType } = this.props;
+    const { filterTimeSel, filterType, timeSelValue, timeSel, editingTimeSel } = this.props;
+    let currentTimeSel;
+    switch(timeSelValue) {
+      case "Edit":
+      case "Init":
+      case "Empty":
+      case "Filtered":
+        currentTimeSel = JSON.parse(JSON.stringify(editingTimeSel))
+        break;
+      case "Save":
+      case "Cancel":
+        currentTimeSel = JSON.parse(JSON.stringify(timeSel))
+        break;
+      default:
+        currentTimeSel = JSON.parse(JSON.stringify(timeSel))
+        break;
+    }
     return (
       <div className="time-selector-wrapper">
         <table className="time-selector">
           <tbody>
             {
-              timeSel.map((row, rowIndex) => {
+              currentTimeSel.map((row, rowIndex) => {
                 return (
                   <tr key={'tr_' + rowIndex} >
                     {  

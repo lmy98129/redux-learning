@@ -1,10 +1,10 @@
 import React, { Component, Fragment } from 'react'
 import { Redirect } from 'react-router-dom'
 import { Card, WhiteSpace, Button, Popover, Icon, WingBlank } from 'antd-mobile'
-import NavBar from './NavBar'
+import NavBar from '../components/NavBar'
 import './CourseInfo.css'
 import { connect } from 'react-redux'
-import { mapDispatchToProps, mapStateToProps } from '../redux/modules/';
+import { mapDispatchToProps, mapStateToProps } from '../redux/modules';
 
 const Item = Popover.Item;
 

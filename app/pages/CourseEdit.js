@@ -1,11 +1,11 @@
 import React, { Component, Fragment } from 'react'
-import NavBar from './NavBar'
+import NavBar from '../components/NavBar'
 import { Redirect } from 'react-router-dom'
 import { WhiteSpace, InputItem, List, Toast, Modal } from 'antd-mobile';
 import { createForm } from 'rc-form'
 import { mapDispatchToProps, mapStateToProps } from '../redux/modules'
 import { connect } from 'react-redux'
-import TimeSelector from './TimeSelector'
+import TimeSelector from '../components/TimeSelector'
 import store from '../redux/create'
 import { Provider } from 'react-redux'
 
@@ -80,9 +80,9 @@ class CourseEdit extends Component {
   }
 
   render() {
-    const { history, form, updateCourse, addCourse, courseTable, initTimeSel, emptyTimeSel} = this.props
+    const { history, form, updateCourse, addCourse, courseTable, saveTimeSel, cancelTimeSel} = this.props
     const { getFieldProps, getFieldError, validateFields, getFieldsValue, setFieldsValue } = form
-    const { time, date, index, content, teacher, editStatus, weektime } = this.state;
+    const { time, date, index, content, teacher, editStatus } = this.state;
     if (!time || !date) {
       return <Redirect push to="/"/>
     }
@@ -163,21 +163,17 @@ class CourseEdit extends Component {
               editable={false}
               onClick={() => alert("周数选择", <Provider store={store}><TimeSelector /></Provider>, [
                 { text: "取消", onPress: () => {
-                    switch(editStatus) {
-                      case "edit":
-                        initTimeSel(content.weeks);
-                        break;
-                      case "add":
-                        emptyTimeSel();
-                        break;
-                    }
+                    // setFieldsValue({
+                    //   SKZCZFC: timeSelToWeekTime(this.props.week)
+                    // })
+                    cancelTimeSel();
                   }, 
                   style: 'default' 
                 },
                 { text: "确定", onPress: () => {
-                    // this.setState({ weektime: timeSelToWeekTime(this.props.week) })
+                    saveTimeSel(this.props.editingWeek);
                     setFieldsValue({
-                      SKZCZFC: timeSelToWeekTime(this.props.week)
+                      SKZCZFC: timeSelToWeekTime(this.props.editingWeek)
                     })
                   } 
                 }

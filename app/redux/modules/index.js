@@ -7,7 +7,7 @@ import courseTableReducer, {
    courseTableGetter,
    forceToUpdate,
    changeWeek,
-   showAllCourse
+   showAllCourse,
   } from './courseTable';
 import routerReducer, {
     forwardPush,
@@ -17,7 +17,9 @@ import timeSelReducer, {
     initTimeSel,
     editTimeSel,
     filterTimeSel,
-    emptyTimeSel
+    emptyTimeSel,
+    saveTimeSel,
+    cancelTimeSel,
   } from './timeSelect'
 
 export default combineReducers({
@@ -63,7 +65,9 @@ export const mapDispatchToProps = (dispatch) => {
     filterTimeSel: (mode, timeSel) => filterTimeSel(mode, timeSel, dispatch),
     emptyTimeSel: () => emptyTimeSel(dispatch),
     changeWeek: (week) => changeWeek(week, dispatch),
-    showAllCourse: (showAll) => showAllCourse(showAll, dispatch)
+    showAllCourse: (showAll) => showAllCourse(showAll, dispatch),
+    saveTimeSel: (editingWeek) => saveTimeSel(editingWeek, dispatch),
+    cancelTimeSel: () => cancelTimeSel(dispatch)
   }
 }
 

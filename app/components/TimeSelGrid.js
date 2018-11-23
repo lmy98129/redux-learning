@@ -5,7 +5,7 @@ import './TimeSelGrid.css'
 
 class TimeSelectorGrid extends Component {
   render() {
-    const { col, row, selected, editTimeSel, timeSel, itemValue } = this.props;
+    const { col, row, selected, editTimeSel, editingTimeSel, itemValue } = this.props;
     return (
       <td 
         className={
@@ -13,7 +13,7 @@ class TimeSelectorGrid extends Component {
         }
         onClick={() => {
           let status = (itemValue==2) ? 0 : 2;
-          editTimeSel(row, col, timeSel, status);
+          editTimeSel(row, col, editingTimeSel, status);
         }}
       >
         {

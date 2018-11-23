@@ -1,6 +1,6 @@
 import React from 'react'
-import NavBar from './NavBar'
-import TabBar from './TabBar'
+import NavBar from '../components/NavBar'
+import TabBar from '../components/TabBar'
 import { List, WhiteSpace, Button } from 'antd-mobile'
 import './User.css'
 
@@ -21,7 +21,7 @@ const User = ({ history }) => {
       <List>
         <Item extra="41624140">学号</Item>
         <Item extra="刘孟寅">姓名</Item>
-        <Item extra="2016级计1602班">班级</Item>
+        <Item extra="计1602班">班级</Item>
       </List>
       <WhiteSpace size="lg"/>
       <List>

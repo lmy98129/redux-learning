@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { mapDispatchToProps, mapStateToProps } from '../redux/modules/'
+import { mapDispatchToProps, mapStateToProps } from '../redux/modules'
 import { Icon, Drawer, List, Picker, Modal, Switch } from 'antd-mobile'
-import TabBar from './TabBar'
-import NavBar from './NavBar'
-import Table from './CourseTable'
+import TabBar from '../components/TabBar'
+import NavBar from '../components/NavBar'
+import Table from '../components/CourseTable'
 import './Home.css'
 
 const Item = List.Item;
