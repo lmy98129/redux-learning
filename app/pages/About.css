@@ -1,0 +1,18 @@
+.about-logo {
+  margin: 30px auto;
+  font-size: 4.5rem;
+  text-align: center;
+  font-weight: lighter;
+}
+
+.about-title {
+  font-size: 3rem;
+}
+
+.about-hint {
+  margin: 20px auto;
+  font-size: 1.5rem;
+  text-align: center;
+  font-weight: lighter;
+  line-height: 150%;
+}
