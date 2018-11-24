@@ -78,7 +78,7 @@ class Home extends Component {
                 { text:'取消', onPress: () => {}, style: "default" },
                 { text:'确定', onPress: () => {
                   let userInfo = { idNo, secrite, stuNo };
-                  getSchedule(userInfo);
+                  getSchedule(userInfo, true);
                   this.setState({ isDrawOpen: false })
                 }}
               ])

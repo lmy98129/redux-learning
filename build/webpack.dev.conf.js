@@ -3,6 +3,22 @@ const merge = require('webpack-merge');
 const baseWebpackConfig = require('./webpack.base.conf.js');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
+const serverApis = ['/table', '/login', '/today', '/profile'];
+
+const proxyConfigurator = () => {
+    let proxyConfig = {};
+    for (let item of serverApis) {
+      proxyConfig[item] = {
+        target: 'http://localhost:7001'+ item,
+        changeOrigin: true,
+        pathRewrite: {}
+      }
+      proxyConfig[item].pathRewrite['^'+item] = '/'
+    }
+    return proxyConfig
+}
+
+const proxyConfig = proxyConfigurator();
 
 module.exports = merge(baseWebpackConfig, {
   mode: 'development',
@@ -32,28 +48,6 @@ module.exports = merge(baseWebpackConfig, {
     https: false,
     noInfo: true,
     open: true,
-    proxy: {
-      '/table': {
-        target: 'http://xbeta.club/table',
-        changeOrigin: true,
-        pathRewrite: {
-          '^/table': '/'
-        }
-      },
-      '/login': {
-        target: 'http://xbeta.club/login',
-        changeOrigin: true,
-        pathRewrite: {
-          '^/login': '/'
-        }
-      },
-      '/today': {
-        target: 'http://xbeta.club/today',
-        changeOrigin: true,
-        pathRewrite: {
-          '^/today': '/'
-        }
-      }
-    }
+    proxy: proxyConfig
   }
 });

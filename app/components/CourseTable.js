@@ -16,6 +16,7 @@ class CourseTable extends Component {
           case "Success":
           case "Edited":
           case "Change Week":
+          case "Failed":
             break;
           default:
             let userInfo = { idNo, secrite, stuNo };
@@ -38,11 +39,17 @@ class CourseTable extends Component {
           case "Edited":
           case "Change Week":
             break;
+          case "Failed":
+            Toast.fail("加载失败", 3);
+            break;
           default:
             let userInfo = { idNo, secrite, stuNo };
             getSchedule(userInfo);
             break;
         }
+        break;
+      case "Failed":
+        Toast.fail("登录失败", 3);        
         break;
     }
   }
@@ -63,20 +70,6 @@ class CourseTable extends Component {
             </Button>
           </div>
         )
-      case "FAILED":
-        Toast.fail("登录失败", 3);
-        return (
-          <div className="loading-status">
-            登录失败<br/><br/>
-            <Button 
-              size="small" 
-              style={{margin: "0 auto"}}
-              onClick={() => history.push('/login')}
-            >
-              点我重新登录
-            </Button>
-          </div>
-        )
     }
     switch(tableValue) {
       case "Loading":
@@ -90,7 +83,6 @@ class CourseTable extends Component {
           </div>
         )
       case "Failed":
-        Toast.fail("加载失败", 3);
         return (
           <div className="loading-status">
             数据加载失败<br/><br/>请检查您的网络

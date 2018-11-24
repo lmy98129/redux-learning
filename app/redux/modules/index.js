@@ -24,7 +24,8 @@ import timeSelReducer, {
 import userReducer, {
     checkLogin,
     commitLogin,
-    quitLogin
+    quitLogin,
+    getUserProfile
   } from './user'
 
 export default combineReducers({
@@ -63,5 +64,6 @@ export const mapDispatchToProps = (dispatch) => {
     checkLogin: () => checkLogin(dispatch),
     commitLogin: (userInfo) => commitLogin(userInfo, dispatch),
     quitLogin: () => quitLogin(dispatch),
+    getUserProfile: (userStatus) => getUserProfile(userStatus, dispatch),
   }
 }

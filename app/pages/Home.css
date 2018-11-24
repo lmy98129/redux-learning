@@ -47,7 +47,7 @@ button {
   }
 }
 
-@media screen and (max-height: 700px) {
+@media screen and (max-height: 800px) {
   .bottom-holder {
     height: 100px;
   }

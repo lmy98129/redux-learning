@@ -15,20 +15,25 @@ class User extends Component {
     const { checkLogin, userStatus } = this.props;
     if (userStatus !== "Logged") {
       checkLogin();
-    }
+    } 
+  }
+
+  componentWillMount() {
+    const { getUserProfile, userStatus } = this.props;
+    getUserProfile(userStatus);
   }
 
   render() {
-    const { userStatus, history, quitLogin } = this.props;
+    const { userStatus, history, quitLogin, userProfile } = this.props;
     let userItems;
     switch(userStatus) {
       case "Logged":
         userItems = (
           <Fragment>
             <List>
-              <Item extra="41624140">学号</Item>
-              <Item extra="刘孟寅">姓名</Item>
-              <Item extra="计1602班">班级</Item>
+              <Item extra={userProfile.stuNo || ""}>学号</Item>
+              <Item extra={userProfile.stuName || ""}>姓名</Item>
+              <Item extra={userProfile.className || ""}>班级</Item>
             </List>
             <WhiteSpace size="lg"/>
             <List>

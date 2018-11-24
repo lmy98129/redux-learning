@@ -98,6 +98,7 @@ class Login extends Component {
               })}
               placeholder="请输入信息门户密码"
               clear
+              type="password"
             >
               密码
             </InputItem>
