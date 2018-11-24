@@ -100,7 +100,12 @@ class User extends Component {
             </List>
             <WhiteSpace size="lg"/>
             <List>
-              <Item arrow="horizontal">关于 iCourse</Item>
+              <Item 
+                arrow="horizontal"
+                onClick={() => history.push('/about')}
+              >
+                关于 iCourse
+              </Item>
             </List>
           </div>
         )

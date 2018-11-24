@@ -21,8 +21,8 @@ module.exports = merge(baseWebpackConfig, {
     }),
     new CleanWebpackPlugin(['../public'], {allowExternal: true}),
     new webpack.DefinePlugin({
-      host: "'http://xbeta.club'"
-    })
+      host: "'https://ustb.xbeta.club'"
+    }),
   ],
   optimization: {
     splitChunks: {

@@ -9,7 +9,7 @@ const proxyConfigurator = () => {
     let proxyConfig = {};
     for (let item of serverApis) {
       proxyConfig[item] = {
-        target: 'http://xbeta.club'+ item,
+        target: 'https://ustb.xbeta.club'+ item,
         changeOrigin: true,
         pathRewrite: {}
       }
@@ -37,7 +37,7 @@ module.exports = merge(baseWebpackConfig, {
     new webpack.HotModuleReplacementPlugin(),
     new webpack.DefinePlugin({
       host: "''"
-    })
+    }),
   ],
   devServer: {
     port: '3000',
