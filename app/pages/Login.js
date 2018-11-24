@@ -26,7 +26,7 @@ class Login extends Component {
     return (
       <Fragment>
         {
-          userStatus == "checking" ? 
+          userStatus == "Checking" ? 
           <ActivityIndicator 
               toast
               text="登录中"

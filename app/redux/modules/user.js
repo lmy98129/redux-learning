@@ -1,17 +1,21 @@
 import qs from 'querystring'
 
 const actionTypes = {
+  INIT: 'USER/INIT',
   UNLOGIN: 'USER/UNLOGIN',
   LOGGED: 'USER/LOGGED',
   FAILED: 'USER/FAILED',
   SUCCESS: 'USER/SUCCESS',
   CHECKING: 'USER/CHECKING',
-  GET_PROFILE: 'USER/GET_PROFILE',
-  INIT: 'USER/INIT',
+  GET_PROFILE_INIT: 'USER/GET_PROFILE_INIT',
+  GET_PROFILE_SUCCESS: 'USER/GET_PROFILE_SUCCESS',
+  GET_PROFILE_LOADING: 'USER/GET_PROFILE_LOADING',
+  GET_PROFILE_FAILED: 'USER/GET_PROFILE_FAILED',
 }
 
 const defaultState = { 
   userStatus: "Init",
+  userProfileStatus: "Init",
   idNo: "",
   secrite: "",
   stuNo: "",
@@ -27,7 +31,7 @@ export default (state = defaultState, action) => {
     case 'USER/CHECKING':
       return {
         ...state,
-        userStatus: "checking"
+        userStatus: "Checking"
       }
     case 'USER/UNLOGIN':
       return {
@@ -38,13 +42,6 @@ export default (state = defaultState, action) => {
       return {
         ...state,
         userStatus: "Logged"
-      }
-    case 'USER/GET_PROFILE':
-      let { userProfile } = action;
-      return {
-        ...state,
-        userStatus: "Profile Get",
-        userProfile,
       }
     case 'USER/SUCCESS':
       let { type, ...userInfo } = action;
@@ -57,6 +54,29 @@ export default (state = defaultState, action) => {
       return {
         ...state,
         userStatus: "Failed"
+      }
+    case 'USER/GET_PROFILE_INIT':
+      return {
+        ...state,
+        userProfileStatus: "Init",
+        userProfile: {}
+      }
+    case 'USER/GET_PROFILE_SUCCESS':
+      let { userProfile } = action;
+      return {
+        ...state,
+        userProfileStatus: "Success",
+        userProfile,
+      }
+    case 'USER/GET_PROFILE_FAILED':
+      return {
+        ...state,
+        userProfileStatus: "Failed",
+      }
+    case 'USER/GET_PROFILE_LOADING':
+      return {
+        ...state,
+        userProfileStatus: "Loading",
       }
     default:
       return state;
@@ -125,41 +145,38 @@ export const commitLogin = async (userInfo, dispatch) => {
 export const quitLogin = (dispatch) => {
   localStorage.removeItem('userInfo');
   localStorage.removeItem('userProfile');
-  localStorage.removeItem('courseTable');
+  // localStorage.removeItem('courseTable');
   dispatch({ type: actionTypes.UNLOGIN });
 }
 
-export const getUserProfile = async (userStatus, dispatch) => {
-  if (userStatus == "Logged") {
-    dispatch({ type: actionTypes.CHECKING });
-    let userProfile = localStorage.getItem('userProfile');
-    if (userProfile) {
-      userProfile = JSON.parse(userProfile);
-      dispatch({ type: actionTypes.GET_PROFILE, userProfile })
-    } else {
-      let userInfo = localStorage.getItem('userInfo');
-      if (userInfo) {
-        try {
-          let init = await initLogin(JSON.parse(userInfo));
-          let resp = await fetch(host + '/profile', init);
-          resp = await resp.json();
-          switch(resp.data.code) {
-            case "SUCCESS":
-              userProfile = resp.data.body;
-              localStorage.setItem('userProfile', JSON.stringify(resp.data.body));
-              dispatch({ type: actionTypes.GET_PROFILE, userProfile })
-              break;
-            default:
-              dispatch({ type: actionTypes.FAILED });
-              break;
-          }
-        } catch (error) {
-          dispatch({ type: actionTypes.FAILED });
+export const getUserProfile = async (dispatch) => {
+  dispatch({ type: actionTypes.GET_PROFILE_LOADING });
+  let userProfile = localStorage.getItem('userProfile');
+  if (userProfile) {
+    userProfile = JSON.parse(userProfile);
+    dispatch({ type: actionTypes.GET_PROFILE_SUCCESS, userProfile })
+  } else {
+    let userInfo = localStorage.getItem('userInfo');
+    if (userInfo) {
+      try {
+        let init = await initLogin(JSON.parse(userInfo));
+        let resp = await fetch(host + '/profile', init);
+        resp = await resp.json();
+        switch(resp.data.code) {
+          case "SUCCESS":
+            userProfile = resp.data.body;
+            localStorage.setItem('userProfile', JSON.stringify(resp.data.body));
+            dispatch({ type: actionTypes.GET_PROFILE_SUCCESS, userProfile })
+            break;
+          default:
+            dispatch({ type: actionTypes.GET_PROFILE_FAILED });
+            break;
         }
-      } else {
-        dispatch({ type: actionTypes.FAILED });
+      } catch (error) {
+        dispatch({ type: actionTypes.GET_PROFILE_FAILED });
       }
+    } else {
+      dispatch({ type: actionTypes.GET_PROFILE_FAILED });
     }
-    dispatch({ type: actionTypes.LOGGED });
   }
 }

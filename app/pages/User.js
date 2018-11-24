@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import NavBar from '../components/NavBar'
 import TabBar from '../components/TabBar'
-import { List, WhiteSpace, Button, WingBlank, ActivityIndicator, Modal } from 'antd-mobile'
+import { List, WhiteSpace, Button, WingBlank, ActivityIndicator, Modal, Toast } from 'antd-mobile'
 import { mapDispatchToProps, mapStateToProps } from '../redux/modules'
 import { connect } from 'react-redux'
 import './User.css'
@@ -12,19 +12,45 @@ const alert = Modal.alert;
 class User extends Component {
   constructor(props) {
     super(props);
-    const { checkLogin, userStatus } = this.props;
-    if (userStatus !== "Logged") {
-      checkLogin();
-    } 
+    const { userProfileStatus, userStatus, checkLogin, getUserProfile } = this.props;
+    switch(userStatus) {
+      case "Logged":
+        switch(userProfileStatus) {
+          case "Success":
+          case "Failed":
+            break;
+          case "Init":
+            getUserProfile();
+        }
+        break;
+      default:
+        checkLogin();
+        break;
+    }
   }
 
-  componentWillMount() {
-    const { getUserProfile, userStatus } = this.props;
-    getUserProfile(userStatus);
+  componentWillReceiveProps(nextProps) {
+    const { userProfileStatus, getUserProfile, userStatus } = nextProps;
+    switch(userStatus) {
+      case "Logged":
+        switch(userProfileStatus) {
+          case "Success":
+            break;
+          case "Failed":
+            Toast.fail("加载失败", 3);
+            break;
+          case "Init":
+            getUserProfile();
+        }
+        break;
+      case "Failed":
+        Toast.fail("登录失败", 3);        
+        break;
+    }
   }
 
   render() {
-    const { userStatus, history, quitLogin, userProfile } = this.props;
+    const { userStatus, history, quitLogin, userProfile, userProfileStatus } = this.props;
     let userItems;
     switch(userStatus) {
       case "Logged":
@@ -83,7 +109,7 @@ class User extends Component {
       >
         我的
       </NavBar>
-        {userStatus == "checking" ? 
+        {userStatus == "Checking" || userProfileStatus == "Loading" ? 
           <ActivityIndicator 
               toast
               text="加载中"

@@ -64,6 +64,6 @@ export const mapDispatchToProps = (dispatch) => {
     checkLogin: () => checkLogin(dispatch),
     commitLogin: (userInfo) => commitLogin(userInfo, dispatch),
     quitLogin: () => quitLogin(dispatch),
-    getUserProfile: (userStatus) => getUserProfile(userStatus, dispatch),
+    getUserProfile: () => getUserProfile(dispatch),
   }
 }

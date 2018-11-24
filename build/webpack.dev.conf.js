@@ -9,7 +9,7 @@ const proxyConfigurator = () => {
     let proxyConfig = {};
     for (let item of serverApis) {
       proxyConfig[item] = {
-        target: 'http://localhost:7001'+ item,
+        target: 'http://xbeta.club'+ item,
         changeOrigin: true,
         pathRewrite: {}
       }
